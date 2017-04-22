@@ -1,0 +1,6 @@
+informe/*.log
+informe/*.fls
+informe/*.fdb_latexmk
+informe/*.aux
+informe/*.toc
+informe/*.synctex.gz
