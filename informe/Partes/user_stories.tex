@@ -1,23 +1,34 @@
 \begin{enumerate}
-  \item Como un ingeniero quiero indicarle al simulador que considere la creación de un pozo nuevo determinando la parcela, su costo de construcción y presión inicial para poder tener un balance final mas realista. BV: 5 SP: 5
-  \item Como un ingeniero quiero que el sistema no me permita excavar dos pozos en una misma parcela para agregarle valor al simulador. BV:4 ST:4
-  \item Como un ingeniero quiero que el sistema recalcule la presión del pozo luego de una extracción de producto en el yacimiento para agregarle realidad al simulador. BV: 9 SP: 4 
-  \item Como un ingeniero quiero indicar al sistema la creación de una planta separadora determinando su costo de construcción y capacidad de procesamiento diario para separar el producto en petróleo, gas y agua. BV: 6 SP: 5 
-  \item Como un ingeniero quiero indicarle al sistema la creación de un tanque de almacenamiento determinando su costo de construcción y capacidad para guardar agua o gas. BV: 6 SP: 5 
-  \item Como un ingeniero quiero que el sistema calcule la ganancia de la venta del petróleo extraído para usarlo en el balance final. BV: 9 SP: 3
-  \item Como un ingeniero quiero que el sistema no permita extraer de los pozos conectados a una planta más producto del que la planta puede procesar para agregarle realidad al sistema, ya que esto no puede suceder. BV: 6 SP:8 
-  \item Como un ingeniero quiero que el sistema no permita procesar más producto si su porcentaje de agua y gas supera lo que se puede almacenar en los tanques para agregar realidad al sistema, ya que esto no puede suceder. BV: 6 SP: 8 
-  \item Como un ingeniero quiero indicarle al sistema que procese la venta de gas almacenado en los tanques para poder ganar almacenamiento y dinero. \textbf{Creo que acá haría falta tirar algo tipo "que venda si supera X cantidad" o algo así} BV: 9 SP: 6
-  \item Como un ingeniero quiero que el sistema permita la reinyección de agua comprada en los pozos para aumentar la presión y tener un volumen de producción similar al inicio de la explotación. \textbf{Acá algo similar al anterior, que inyecte si X cosa, por ejemplo "Si el nivel de presión es menor a X".} BV: 8 SP: 4
-  \item Como un ingeniero quiero que el sistema permita la reinyección en los pozos con agua y/o gas almacenados en los tanques para aumentar la presión y tener un volumen de producción similar al inicio de la explotación. \textbf{Idem anterior. No se si es "permita", por ahí un "que reinyecte si pasa tal cosa"} BV: 8 SP: 3 
-  \item Como un ingeniero quiero poder indicarle al sistema cuál es la máxima cantidad que se puede reinyectar por día para evitar superar la capacidad de reinyección del pozo. BV: 5 SP: 3 
-  \item Como un ingeniero quiero que el sistema recalcule la presión del pozo luego de la reinyección del mismo para agregarle realidad al simulador. BV: 7 SP: 2
-  \item Como un ingeniero quiero que el sistema no permita la extracción de ningún pozo durante el mismo día de una reinyección para facilitar las maniobras en el yacimiento. BV: 2 SP: 6 
-  \item Como un ingeniero quiero que el sistema recalcule luego de la reinyección los porcentajes de composición del producto en el reservorio para tener datos consistentes. BV: 6 SP: 5 
-  \item Como un ingeniero quiero indicarle al sistema cual es el valor crítico (porcentaje de petróleo) que indica cuando un pozo (yacimiento????) llega a su fin operativo para no generar pérdidas económicas. BV: 8 SP: 3
-  \item Como un ingeniero quiero indicarle al sistema el porcentaje de petroleo mínimo que se debe tener en el yacimiento al momento de realizar una extracción para establecer así una condición de fin. BV: 6 SP: 3 
-  \item Como miembro del ministerio quiero poder calcular el costo de todas las acciones simuladas sobre un yacimiento para definir el mínimo monto para la licitación. BV: 8 SP: 3 
-  \item Como miembro del ministerio quiero poder consultar el log de acciones simuladas sobre un yacimiento para justificar el monto de la licitación. BV: 10 SP: 1 
+
+  \item Como miembro del ministerio quiero que el sistema calcule el costo y la ganancia de todas las acciones simuladas sobre un yacimiento y las muestre al finalizar la ejecución para definir el mínimo monto para la licitación
+  \item Como un ingeniero quiero que el sistema calcule la ganancia de la venta del petróleo extraído cada día por pozo para refinar la ganancia.
+  \item Como un ingeniero quiero que el sistema no me permita excavar dos pozos en una misma parcela para agregarle valor al simulador
+  \item Como un ingeniero quiero que el sistema recalcule la presión del pozo luego de un día de extracción de producto en el yacimiento para agregarle realidad al simulador
+  \item Como un ingeniero quiero indicar al sistema la creación de una planta separadora para GASTO de separar el producto en petróleo, gas y agua
+  \item Como un ingeniero quiero indicarle al sistema la creación de un tanque de almacenamiento para reflejar el almacenamieto de agua o gas
+  \item Como un ingeniero quiero que el sistema no permita extraer de los pozos conectados a una planta más producto del que la planta puede procesar para agregarle realidad al sistema, ya que esto no puede suceder
+  \item Como un ingeniero quiero que el sistema no permita procesar más producto si su porcentaje de agua o gas supera lo que se puede almacenar en los tanques para agregar realidad al sistema, ya que esto no puede suceder
+  \item Como un ingeniero quiero indicarle al sistema que procese la venta de gas almacenado en los tanques para poder reflejar el aumento de almacenamiento
+  \item Como un ingeniero quiero que el sistema considere la ganancia obtenida de la venta de gas almacenada en tanques para REFLEJAR la ganancia de dinero
+  \item Como un ingeniero quiero poder indicarle al sistema cuál es el valor crítico de presión de los pozos que indica cuando no se debe extraer mas producto para ALGO SIMILAR AL VALOR CRITICO
+  \item Como un ingeniero quiero que el sistema permita la reinyección en los pozos con agua y/o gas almacenados en los tanques para considerar el cambio de composición del producto en el yacimiento en la realidad
+  \item Como un ingeniero quiero que el sistema permita la reinyección en los pozos del agua comprada para considerar el cambio de composición del producto en el yacimiento en la realidad
+  \item Como un ingeniero quiero que el sistema recalcule la presión del pozo luego de la reinyección del mismo para tener en cuenta el aumento de presión utilizado en la realidad y extender la vida útil del yacimiento 
+  \item Como un ingeniero quiero poder indicarle al sistema cuál es la máxima cantidad que se puede reinyectar por día para evitar superar la capacidad de reinyección del pozo existente en la realidad
+  \item Como un ingeniero quiero que el sistema no permita la extracción de ningún pozo durante el mismo día de una reinyección para tener un cálculo de presión mas preciso
+  \item Como un ingeniero quiero poder indicarle al sistema cuál es el valor crítico (porcentaje de petróleo) que indica cuando un yacimiento llega a su fin operativo para KASJFD (redondear ganancia y despreciar muchos días de poca ganancia)
+  \item Como miembro del ministerio quiero poder consultar el log de acciones simuladas sobre un yacimiento para justificar el monto de la licitación 
+  \item Como un ingeniero quiero indicarle al simulador que considere la creación de un pozo nuevo para poder tener un balance final mas realista
+  \item Como un ingeniero quiero indicarle al simulador que considere la creación de un pozo nuevo para poder tener un balance final mas realista
+  \item Como un ingeniero quiero indicarle al simulador que considere la creación de una cantidad de pozos en las parcelas con menor profundidad al yacimiento para reflejar una posible estrategia del equipo de ingeniería
+  \item Como un ingeniero quiero indicarle al simulador que considere la creación de una cantidad de pozos en las parcelas cuya composición ofrezca menor resistencia a la perforación para reflejar una posible estrategia del equipo de ingeniería
+  \item Como un ingeniero quiero indicarle al simulador que considere la creación de una cantidad de pozos en las parcelas con mayor presión inicial para reflejar una posible estrategia del equipo de ingeniería
+  \item Como un ingeniero quiero indicarle al sistema en qué momento inicia la excavación de un pozo para LOS TIEMPOS SEAN MAS REALISTAS
+  \item Como un ingeniero quiero poder indicarle al sistema el alquiler de un RIG para ser utilizado en la excavación de un cierto pozo para tener en cuenta el costo de la excavación de un pozo
+  \item Como un ingeniero quiero poder indicarle al sistema la cantidad máxima de RIGS que pueden utilizarse simultáneamente JBHJLÑASDJNHM
+
+
+
 \end{enumerate}
 
 Las tres user stories m\'as importantes son la 19, la 13 y la 6.
