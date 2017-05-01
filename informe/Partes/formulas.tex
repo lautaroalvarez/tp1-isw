@@ -1,0 +1,46 @@
+\section{Formulas}
+
+\begin{enumerate}
+ \item Presi\'on de un pozo $x$ en el d\'ia $t$ despu\'es de haber sido construido. 
+ 
+  $$
+    P_{x,{t+1}} = \left\{
+    \begin{array}{cl}
+    \textit{Undefined}	& \mbox{si } t < 0 \\
+    P_{bc_x} 		& \mbox{si } t = 0 \\
+    P_{x,t} \ e^{-\beta_i}	& \mbox{si } t > 0 \text{ y no hay inyecci\'on en ese d\'ia para ese pozo} \\
+    P_{bc_x} \frac{\text{VI} - \text{VE}_i + \text{VR}_i}{\text{VI}} & \mbox{si } t > 0 \text{ y hay inyecci\'on en ese d\'ia para ese pozo} \\
+    \end{array}\right.
+    $$
+
+ Siendo:
+ 
+ \begin{itemize}
+  \item $i$ el d\'ia \textit{real} asociado al $t$ ($t$ es el offset desde el d\'ia de la construcci\'on del pozo e $i$ el offset desde el inicio de actividad en el yacimiento). 
+  \item $P_{bc_x}\in[\text{3000, 3500}]$ (en psi) presi\'on de boca de pozo (inicial) para el pozo $x$.
+  \item VI $\in[1\times 10^7, 1\times 10^9]$ (en $m^3$) volumen inicial del producto en el yacimiento
+  \item VE$_i$ volumen total extra\'ido en todo el yacimiento al d\'ia $i$ (?`La suma del potencial de los pozos para cada d\'ia que se extrae?)
+  \item VR$_i$ volumen total reinyectado en todo el yacimiento al d\'ia $i$. Se debe cumplir que VR$_i<$VE$_i$
+  \item La constante $\beta_i$ esta definida como
+  \begin{equation*}
+   \beta_i = \frac{V_i}{10\ \text{VI}\ (\text{NP}_i)^{2/3}}
+  \end{equation*}
+  \item V$_i$ es el volumen total del producto en el reservorio que va quedando luego de $i$ d\'ias de explotaci\'on (?`Es lo mismo que VI - VE$_i$ + VR$_i$?)
+  \item NP$_i$ cantidad de pozos (?`total, extrayendo y no extrayendo?) en el d\'ia $i$
+ \end{itemize}
+
+ \item Potencial del pozo $x$ en el d\'ia $t$ despu\'es de haber sido creado
+ 
+ \begin{equation*}
+  V_{x,t} = \alpha_1 \frac{P_{x,t}}{\text{NPH}_i} + \alpha_2 \left(\frac{P_{x,t}}{\text{NPH}_i}\right)^2
+ \end{equation*}
+
+ Siendo: 
+ 
+ \begin{itemize}
+  \item $\alpha_1\in[\text{0.1, 0.6}]$ (en $m^3/$psi) una constante que es par\'ametro del simulador
+  \item $\alpha_2\in[\text{0.005, 0.01}]$ (en $m^3/$psi$^2$) una constante que es par\'ametro del simulador
+  \item NPH$_i$ cantidad de pozos habilitados (?`extrayendo?) en el d\'ia $i$
+ \end{itemize}
+
+\end{enumerate}
