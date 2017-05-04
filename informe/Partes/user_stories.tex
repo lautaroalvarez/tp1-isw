@@ -144,7 +144,7 @@ Dados los \textit{user stories} enumerados anteriormente, seleccionaremos tres d
 \textbf{13.} Como un ingeniero quiero que el sistema permita la reinyección en los pozos con agua y/o gas almacenados en los tanques para tener en cuenta la técnica de aumento de presión utilizado para extender la vida útil del yacimiento y así aumentar la ganancia final.\\
 \textbf{Business Value: 6 - Story Points: 8}\\
 
-Tareas:
+\textbf{Tareas:}
 
 \begin{itemize}
     \item Permitir determinar por parámetro reinyectar agua y/o gas.
@@ -162,15 +162,17 @@ Para mejorar el efecto de este user story, se agrega el número 15, que precisam
 dado su story point igual a ocho creemos que se necesitan alrededor de 50 horas hombre para desarrollar esa tarea, por lo cual llevar\'ia alrededor de dos semanas dicho spring.\\
 
 \textbf{Criterios de aceptaci\'on:}
-Al inyectarse gas en un pozo la presi\'on aumenta, se decrementa la cantidad inyectada del almacenamiento y se loggea la acci\'on.
-Al inyectarse agua en un pozo la presi\'on aumenta, se decrementa la cantidad inyectada del almacenamiento y se loggea la acci\'on
+\begin{itemize}
+    \item Al inyectarse gas en un pozo la presi\'on aumenta, se decrementa la cantidad inyectada del almacenamiento y se loggea la acci\'on.
+    \item Al inyectarse agua en un pozo la presi\'on aumenta, se decrementa la cantidad inyectada del almacenamiento y se loggea la acci\'on.
+\end{itemize}
 
 \subsubsection{Segundo user story}
 
 \textbf{20.} Como un ingeniero quiero que el sistema calcule la ganancia obtenida por la venta del petróleo extraído cada día por cada pozo para aproximar la ganancia total del emprendimiento.\\
 \textbf{Business Value: 10 - Story Points: 8}\\
 
-Tareas:
+\textbf{Tareas:}
 
 \begin{itemize}
     \item Dado cada pozo habilitado en el día, calcular cual es la cantidad de producto extraído.
@@ -183,14 +185,18 @@ Tareas:
 dado su story point igual a ocho creemos que se necesitan alrededor de 50 horas hombre para desarrollar esa tarea, por lo cual llevar\'ia alrededor de dos semanas dicho spring.\\
 
 \textbf{Criterios de aceptaci\'on:}
-Funcionamiento correcto un d\'ia con un pozo, funcionamiento correcto varios d\'ias con un pozo, varios d\'ias con varios pozos.
+\begin{itemize}
+    \item Funcionamiento correcto un d\'ia con un pozo.
+    \item Funcionamiento correcto varios d\'ias con un pozo.
+    \item Funcionamiento de varios d\'ias con varios pozos.
+\end{itemize}
 
 \subsubsection{Tercer user story}
 
 \textbf{27.} Como un ingeniero quiero poder indicarle al sistema que simule la excavación de los pozos utilizando la máxima cantidad de RIGS en simultaneo para reflejar una posible estrategia utilizada por el equipo de ingeniería.\\
 \textbf{Business Value: 5 - Story Points: 5}\\
 
-Tareas:
+\textbf{Tareas:}
 
 \begin{itemize}
     \item Validar que es posible crear un pozo mas y que hay un RIG disponible. Si no hay ninguno y aún no se alcanzó el máximo de RIGS simultáneos, alquilar uno nuevo. Sino, esperar a que se libere el primer RIG ya alquilado y utilizarlo.
@@ -202,6 +208,13 @@ Tareas:
 Notar que según los user story que se hayan implementado previamente, el gasto de utilizar un RIG puede incluir no solo el costo de alquiler por mínima cantidad de dias, sino también el consumo de combustible y el tiempo extra utilizado para excavar (dado por la velocidad de excavación frente al terreno de la parcela en cuestión y por su profundidad).\\
 
 \textbf{Estimaci\'on RRHH:}
-\\
+dado su story point igual a cinco creemos que se necesitan alrededor de 40 horas hombre para desarrollar esa tarea, por lo cual llevar\'ia alrededor de dos semanas dicho spring.\\
 
 \textbf{Criterios de aceptaci\'on:}
+\begin{itemize}
+    \item Al intentar crear un pozo cuando no hay m\'as parcelas libres el pozo no se crea.
+    \item Al intentar crear un pozo cuando se alcanzó la cantidad máxima de pozos, el pozo no se crea.
+    \item Al intentar crear un pozo cuando no hay RIGs disponibles y no se puede alquilar ninguno (ya se alcanzó la cantidad máxima de RIGs simultáneos) el mismo no se comienza a crear hasta que se libere alguno.
+    \item Si se intenta crear un pozo y hay una parcela disponible pero ningún RIG, sin haberse alcanzado la cantidad máxima de RIGs simultáneos, el mismo se comienza a crear mediante el alquiler de un RIG nuevo.
+    \item Si se intenta crear un pozo y hay una parcela y un RIG disponible se debe crear un plan de excavaci\'on, tener en cuenta el alquiler de la m\'aquina y loggear la acci\'on.
+\end{itemize}
