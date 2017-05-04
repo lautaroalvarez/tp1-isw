@@ -18,8 +18,8 @@ class PlantaProcesadora {
 }
 
 abstract TanqueDeAlmacenamiento {
-    capacidad : Number
-    tiempoDeConstruccion : Time
+    capacidad() : Number
+    tiempoDeConstruccion() : Time
 }
 
 class MantoGeologico{
@@ -76,6 +76,7 @@ class PdCdeTanqueDeGas {
 
 class CatalogoDeExcavadoras {
     catalogo : List<ExcavadoraRig, Price>
+    precioDe(unaExcavadora) : Price
 }
 
 EventoDeReinyeccion o-- TanqueDeAgua 

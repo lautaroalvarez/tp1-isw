@@ -28,11 +28,13 @@ class PdCdeTanqueDeGas {
 
 class CatalogoDeExcavadoras {
     catalogo : List<ExcavadoraRig, Price>
+    precioDe(unaExcavadora) : Price
 }
 
 class SistemaDeGestionDePozos {
     catalogoExcavadoras : CatalogoDeExcavadoras
     planesDeConstruccion : List<PlanesDeConstruccion>
+    eventosSobrePozos : List<EventoSobrePozo>
 
     construir(unaPlantaProcesadora, fechaInicio) : void
     construirPozo(unYacimiento, unaPlanta, unaExcavadora, fechaInicio) : void
@@ -43,9 +45,11 @@ class SistemaDeGestionDePozos {
     tanquesDeAguaConstruidosA(unaFecha) : List<TanqueDeAgua>
     tanquesDeGasConstruidosA(unaFecha) : List<TanqueDeGas>
 
-    extraerDe(unPozo, unaFecha)
-    inyectar(unPozo, unTanqueDeAlmacenamiento, cantidad, unaFecha)
-    inyectarAgua(unPozo, cantidad, unaFecha)
+    extraerDe(unPozo, unaFecha) : void
+    inyectar(unPozo, unTanqueDeAlmacenamiento, cantidad, unaFecha) : void
+    inyectarAgua(unPozo, cantidad, unaFecha) : void
+
+    loguearTodoEn(unArchivo) : void
 }
 
 class CalculadoraDePresion { 

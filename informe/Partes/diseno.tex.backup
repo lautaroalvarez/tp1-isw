@@ -8,13 +8,9 @@ Es el sistema quien se encargar\'a de que las construcciones que se deseen hacer
 
 Teniendo as\'i un sistema con una colecci\'on de planes de construcci\'on y eventos sobre pozos v\'alidos, se pueden ordenar por fecha y facilmente loguearlo en un archivo. 
 
-Tambi\'en puede llevar como par\'ametro el costo de un litro de agua, de gas y combustible para estimar el valor de inyectar agua comprada, de vender gas y el alquiler total de una excavadora, respectivamente.
+Tambi\'en puede llevar como par\'ametro el costo de un litro de agua, de gas y combustible para estimar el valor de inyectar agua comprada, de vender gas y el alquiler total de una excavadora. 
 
 El objeto \texttt{CalculadoraDePresion} se va a encargar de consultarle al sistema qu\'e pozos est\'an habilitados en un d\'ia, y cuales fueron los eventos hasta ese momento para calcular la presi\'on y el potencial. 
-
-Cada \texttt{PlanDeConstruccion} conoce el bien material que est\'a construyendo y una fecha de inicio que es definido por el usuario. Es para los pozos que adem\'as es necesario indicarle qu\'e excavadora usar. Dados los requerimientos, se puede considerar que el sistema busque en el cat\'alogo qu\'e excavadora est\'a disponible en la fecha que se quiere construir y simule la construcci\'on con esa. 
-
-Los atributos del resto de los objetos \texttt{PlantaProcesadora}, \texttt{PozoDeExtraccion}, \texttt{ParcelaDeYacimiento}, \texttt{Yacimiento} y \texttt{MantoGeologico} son f\'acilmente entendible apartir del diagrama de clases:
 
 \begin{figure}[H]
   \centering
