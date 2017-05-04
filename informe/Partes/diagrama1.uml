@@ -1,0 +1,95 @@
+abstract PlanDeConstruccion {
+    fechaInicioDeConstruccion : date
+    fechaFinDeConstruccion() : date
+    recursosNecesarios() : List
+    bienConstruido() : Object
+}
+
+class PdCdePozo { 
+    pozoDeExtraccion : PozoDeExtraccion
+    excavadora : ExcavadoraRig
+    fechaInicioDeConstruccion : date
+}
+
+class PdCdePlanta { 
+    planta : PlantaProcesadora
+    fechaInicioDeConstruccion : date
+}
+
+class PdCdeTanqueDeAgua { 
+    tanque : TanqueDeAgua
+    fechaInicioDeConstruccion : date
+}
+
+class PdCdeTanqueDeGas { 
+    tanque : TanqueDeGas
+    fechaInicioDeConstruccion : date
+}
+
+class CatalogoDeExcavadoras {
+    catalogo : List<ExcavadoraRig, Price>
+}
+
+class SistemaDeGestionDePozos {
+    catalogoExcavadoras : CatalogoDeExcavadoras
+    planesDeConstruccion : List<PlanesDeConstruccion>
+
+    construir(unaPlantaProcesadora, fechaInicio) : void
+    construirPozo(unYacimiento, unaPlanta, unaExcavadora, fechaInicio) : void
+    construir(unTanqueDeAlmacenamiento, fechaInicio) : void
+    
+    plantasConstruidasA(unaFecha) : List<PlantaProcesadora>
+    pozosConstruidosA(unaFecha) : List<PozoDeExtraccion>
+    tanquesDeAguaConstruidosA(unaFecha) : List<TanqueDeAgua>
+    tanquesDeGasConstruidosA(unaFecha) : List<TanqueDeGas>
+
+    extraerDe(unPozo, unaFecha)
+    inyectar(unPozo, unTanqueDeAlmacenamiento, cantidad, unaFecha)
+    inyectarAgua(unPozo, cantidad, unaFecha)
+}
+
+class CalculadoraDePresion { 
+    presionDe(unPozo, unaFecha, unSistemaDeGestionDePozos) : Number
+    potencial(unPozo, unaFecha, unSistemaDeGestionDePozos) : Number
+}
+
+abstract EventoSobrePozo {
+    fechaEvento() : Date
+    volumenInvolucrado() : Number
+    pozoInvolucrado() : PozoDeExtraccion
+}
+
+class EventoDeExtraccion { 
+    pozo : PozoDeExtraccion
+    fecha : Date
+}
+
+class EventoDeReinyeccion { 
+    pozo : PozoDeExtraccion
+    fecha : Date
+    cantidad : Number
+    tanque : TanqueDeAgua
+}
+
+class EventoDeInyeccion { 
+    pozo : PozoDeExtraccion
+    fecha : Date
+    cantidad : Number
+}
+
+
+SistemaDeGestionDePozos *-- "n" PlanDeConstruccion
+SistemaDeGestionDePozos *-- CalculadoraDePresion
+SistemaDeGestionDePozos *-- "n" EventoSobrePozo 
+SistemaDeGestionDePozos *-- CatalogoDeExcavadoras 
+
+EventoSobrePozo <.. EventoDeExtraccion
+EventoSobrePozo <.. EventoDeInyeccion
+EventoSobrePozo <.. EventoDeReinyeccion
+
+PlanDeConstruccion <.. PdCdePozo
+PlanDeConstruccion <.. PdCdePlanta
+PlanDeConstruccion <.. PdCdeTanqueDeAgua
+PlanDeConstruccion <.. PdCdeTanqueDeGas
+
+@enduml

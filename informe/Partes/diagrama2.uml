@@ -1,0 +1,106 @@
+@startuml
+class PozoDeExtraccion { 
+    parcela : ParcelaDeYacimiento
+    planta : PlantaProcesadora
+} 
+
+class ParcelaDeYacimiento {
+    distanciaAlReservorio : Number
+    presionInicial : Number
+    yacimiento : Yacimiento 
+    mantoGeologico : MantoGeologico
+}
+
+class PlantaProcesadora {
+    tiempoDeConstruccion : Time
+    tanquesDeAlmacenamiento : List<TanqueDeAlmacenamiento>
+    pozos : List<PozoDeExtraccion>
+}
+
+abstract TanqueDeAlmacenamiento {
+    capacidad : Number
+    tiempoDeConstruccion : Time
+}
+
+class MantoGeologico{
+    nombre : String
+    resistencia : Percentage
+}
+
+class Yacimiento { 
+    tamanio : Number
+    volumenInicial : Number 
+    porcentajeDeAgua : Percentage
+    porcentajeDeGas : Percentage
+    porcentajeDePetroleo : Percentage
+}
+
+class ExcavadoraRig { 
+    profunidadPorDia : Number
+    consumoPorDia : Number
+}
+
+abstract EventoSobrePozo {
+    fechaEvento() : Date
+    volumenInvolucrado() : Number
+    pozoInvolucrado() : PozoDeExtraccion
+}
+
+class EventoDeReinyeccion { 
+    pozo : PozoDeExtraccion
+    fecha : Date
+    cantidad : Number
+    tanque : TanqueDeAgua
+}
+
+class PdCdePozo { 
+    pozoDeExtraccion : PozoDeExtraccion
+    excavadora : ExcavadoraRig
+    fechaInicioDeConstruccion : date
+}
+
+class PdCdePlanta { 
+    planta : PlantaProcesadora
+    fechaInicioDeConstruccion : date
+}
+
+class PdCdeTanqueDeAgua { 
+    tanque : TanqueDeAgua
+    fechaInicioDeConstruccion : date
+}
+
+class PdCdeTanqueDeGas { 
+    tanque : TanqueDeGas
+    fechaInicioDeConstruccion : date
+}
+
+class CatalogoDeExcavadoras {
+    catalogo : List<ExcavadoraRig, Price>
+}
+
+EventoDeReinyeccion o-- TanqueDeAgua 
+EventoDeReinyeccion ..> EventoSobrePozo
+
+EventoSobrePozo o-- PozoDeExtraccion
+
+PdCdePozo o-- PozoDeExtraccion
+PdCdePozo o-- ExcavadoraRig
+
+PozoDeExtraccion -- ParcelaDeYacimiento
+PozoDeExtraccion -- PlantaProcesadora
+
+ParcelaDeYacimiento *-- MantoGeologico
+ParcelaDeYacimiento "n" --o Yacimiento
+
+PdCdePlanta o-- PlantaProcesadora
+
+PlantaProcesadora *-- "n" TanqueDeAlmacenamiento
+
+PdCdeTanqueDeAgua o-- TanqueDeAgua
+PdCdeTanqueDeGas o-- TanqueDeGas
+
+TanqueDeAgua ..> TanqueDeAlmacenamiento
+TanqueDeGas ..> TanqueDeAlmacenamiento
+
+CatalogoDeExcavadoras --* "n" ExcavadoraRig
+@enduml

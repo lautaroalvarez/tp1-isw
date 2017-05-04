@@ -1,0 +1,34 @@
+
+\usepackage[utf8]{inputenc} % para poder usar tildes en archivos UTF-8
+\usepackage[spanish]{babel} % para que comandos como \today den el resultado en castellano
+\usepackage{a4wide} % márgenes un poco más anchos que lo usual
+\usepackage[conEntregas]{Sty/caratula}
+\usepackage{Sty/mathtools}
+\usepackage{Sty/float}
+\usepackage[pdftex]{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[ruled,vlined,linesnumbered]{Sty/algorithm2e}
+%Esto de abajo es para encabezado y pie de pagina
+\usepackage{Sty/lastpage}
+\usepackage{fancyhdr}
+\usepackage{amsfonts}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+
+\usepackage[simplified]{Sty/pgf-umlcd}
+
+\pagestyle{fancy}
+
+\cfoot{\thepage /\pageref{LastPage} }
+
+%uso: \ponerGrafico{file}{caption}{scale}{label}
+\newcommand{\ponerGrafico}[4]
+{\begin{figure}[H]
+  \centering
+  \subfloat{\hspace{-3.5cm}\includegraphics[scale=#3]{#1}}
+  \caption{#2} \label{fig:#4}
+\end{figure}
+}
