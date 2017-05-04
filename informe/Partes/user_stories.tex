@@ -1,35 +1,174 @@
 \section{User Stories}
 
+\subsection{Valores}
+
+A continuación enumeramos los \textit{user stories} que especifican los requerimientos funcionales que componen el desarrollo del simulador.
+
+Cada \textit{user story} está acompañado por su \textit{Business value} y sus \textit{Story points}. La escala de los mismos es la siguiente:\\
+
+\textbf{Business Value: 1-2-3-4-5-6-7-8-9-10}\\
+
+\textbf{Story Points: 1-2-3-5-8-13-21}
+
 \begin{enumerate}
-  \item Como miembro del ministerio quiero que el sistema calcule el costo y la ganancia de todas las acciones simuladas sobre un yacimiento y las muestre al finalizar la ejecución para definir el mínimo monto para la licitación
-  \item Como un ingeniero quiero que el sistema calcule la ganancia de la venta del petróleo extraído cada día por pozo para refinar la ganancia.
-  \item Como un ingeniero quiero que el sistema no me permita excavar dos pozos en una misma parcela para agregarle valor al simulador
-  \item Como un ingeniero quiero que el sistema recalcule la presión del pozo luego de un día de extracción de producto en el yacimiento para agregarle realidad al simulador
-  \item Como un ingeniero quiero indicar al sistema la creación de una planta separadora para GASTO de separar el producto en petróleo, gas y agua
-  \item Como un ingeniero quiero indicarle al sistema la creación de un tanque de almacenamiento para reflejar el almacenamieto de agua o gas
-  \item Como un ingeniero quiero que el sistema no permita extraer de los pozos conectados a una planta más producto del que la planta puede procesar para agregarle realidad al sistema, ya que esto no puede suceder
-  \item Como un ingeniero quiero que el sistema no permita procesar más producto si su porcentaje de agua o gas supera lo que se puede almacenar en los tanques para agregar realidad al sistema, ya que esto no puede suceder
-  \item Como un ingeniero quiero indicarle al sistema que procese la venta de gas almacenado en los tanques para poder reflejar el aumento de almacenamiento
-  \item Como un ingeniero quiero que el sistema considere la ganancia obtenida de la venta de gas almacenada en tanques para REFLEJAR la ganancia de dinero
-  \item Como un ingeniero quiero poder indicarle al sistema cuál es el valor crítico de presión de los pozos que indica cuando no se debe extraer mas producto para ALGO SIMILAR AL VALOR CRITICO
-  \item Como un ingeniero quiero que el sistema permita la reinyección en los pozos con agua y/o gas almacenados en los tanques para considerar el cambio de composición del producto en el yacimiento en la realidad
-  \item Como un ingeniero quiero que el sistema permita la reinyección en los pozos del agua comprada para considerar el cambio de composición del producto en el yacimiento en la realidad
-  \item Como un ingeniero quiero que el sistema recalcule la presión del pozo luego de la reinyección del mismo para tener en cuenta el aumento de presión utilizado en la realidad y extender la vida útil del yacimiento
-  \item Como un ingeniero quiero poder indicarle al sistema cuál es la máxima cantidad que se puede reinyectar por día para evitar superar la capacidad de reinyección del pozo existente en la realidad
-  \item Como un ingeniero quiero que el sistema no permita la extracción de ningún pozo durante el mismo día de una reinyección para tener un cálculo de presión mas preciso
-  \item Como un ingeniero quiero poder indicarle al sistema cuál es el valor crítico (porcentaje de petróleo) que indica cuando un yacimiento llega a su fin operativo para KASJFD (redondear ganancia y despreciar muchos días de poca ganancia)
-  \item Como miembro del ministerio quiero poder consultar el log de acciones simuladas sobre un yacimiento para justificar el monto de la licitación
-  \item Como un ingeniero quiero indicarle al simulador que considere la creación de un pozo nuevo para poder tener un balance final mas realista
-  \item Como un ingeniero quiero indicarle al simulador que considere la creación de un pozo nuevo para poder tener un balance final mas realista
-  \item Como un ingeniero quiero indicarle al simulador que considere la creación de una cantidad de pozos en las parcelas con menor profundidad al yacimiento para reflejar una posible estrategia del equipo de ingeniería
-  \item Como un ingeniero quiero indicarle al simulador que considere la creación de una cantidad de pozos en las parcelas cuya composición ofrezca menor resistencia a la perforación para reflejar una posible estrategia del equipo de ingeniería
-  \item Como un ingeniero quiero indicarle al simulador que considere la creación de una cantidad de pozos en las parcelas con mayor presión inicial para reflejar una posible estrategia del equipo de ingeniería
-  \item Como un ingeniero quiero indicarle al sistema en qué momento inicia la excavación de un pozo para LOS TIEMPOS Y LOGS SEAN MAS REALISTAS
-  \item Como un ingeniero quiero poder indicarle al sistema el alquiler de un RIG para ser utilizado en la excavación de un cierto pozo para tener en cuenta el costo de la excavación de un pozo
-  \item Como un ingeniero quiero poder indicarle al sistema la cantidad máxima de RIGS que pueden utilizarse simultáneamente para mejorar la estimación de costos de exavación.
-  \item Como un ingeniero quiero poder indicarle al sistema que realize la excavación de los pozos utilizando la máxima cantidad posible de RIGS en simultaneo para reflejar una estrategia muy utilizada por el equipo de ingeniería.
-  \item Como un ingeniero quiero poder indicar en qué momento se realiza la construcción de las plantas separadoras y/o los tanques de almacenamiento para LOS TIEMPOS Y LOGS SEAN MAS REALISTAS
-  \item Como un ingeniero quiero determinarle al sistema la cantidad de pozos que se utilizan por día para extraer producto para contemplar en el simulador las decisiones que se toman en la realidad (?)
-  \item Como un ingeniero quiero indircarle al simulador que al momento de extraer producto de los pozos seleccione los que tengan mayor presión para reflejar una posible estrategia del equipo de ingeniería.
-  \item Como un ingeniero quiero indicarle al sistema que cuando se llegue a un nivel de presión determinado en un pozo se reinyecte el agua y gas almacenado en los tanques hasta llegar a un nivel especificado para considerar una estrategia del equipo de ingeniería
+  
+  \item Como un ingeniero quiero indicarle al simulador que considere la creación de un pozo nuevo para poder simular la extracción de petróleo y aumentar así la ganancia calculada.\\
+  \textbf{Business Value: 9 - Story Points: 2}
+  
+  \item Como un ingeniero quiero indicarle al simulador que considere la creación de una cantidad máxima de pozos en las parcelas con menor profundidad al yacimiento para reflejar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 6 - Story Points: 3}
+  
+  \item Como un ingeniero quiero indicarle al simulador que considere la creación de una cantidad máxima de pozos en las parcelas cuya composición ofrezca menor resistencia a la perforación para reflejar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 6 - Story Points: 3}
+  
+  \item Como un ingeniero quiero indicarle al simulador que considere la creación de una cantidad máxima de pozos en las parcelas con mayor presión inicial para reflejar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 6 - Story Points: 3}
+  
+  \item Como un ingeniero quiero que el sistema no me permita excavar dos pozos en una misma parcela para agregarle realidad al simulador y de esa manera obtener valores mas factibles.\\
+  \textbf{Business Value: 5 - Story Points: 1}
+  
+  \item Como un ingeniero quiero que el sistema recalcule la presión del pozo luego de un día de extracción de producto para reflejar una rentabilidad mas certera en los números resultantes.\\
+  \textbf{Business Value: 8 - Story Points: 5}
+  
+  \item Como un ingeniero quiero indicar al sistema la creación de una planta separadora para considerar el gasto de separar el producto en petróleo, gas y agua, y de esa manera reducir lo que corresponda de las ganancias calculadas y obtener valores mas precisos.\\
+  \textbf{Business Value: 7 - Story Points: 3}
+  
+  \item Como un ingeniero quiero indicarle al sistema la creación de un tanque de almacenamiento de agua o gas para considerar el gasto de su construcción y de esa manera reducir lo que corresponda de las ganancias calculadas y obtener valores mas precisos.\\
+  \textbf{Business Value: 7 - Story Points: 3}
+  
+  \item Como un ingeniero quiero que el sistema no permita extraer de los pozos conectados a una planta más producto del que la planta puede procesar para obtener resultados mas precisos.\\
+  \textbf{Business Value: 5 - Story Points: 1}
+  
+  \item Como un ingeniero quiero que el sistema no permita procesar más producto si su porcentaje de agua o gas supera lo que se puede almacenar en los tanques para agregar realidad al sistema, ya que esto no puede suceder y los números resultantes estarían muy lejos de ser verosímiles.\\
+  \textbf{Business Value: 5 - Story Points: 1}
+  
+  \item Como un ingeniero quiero que el sistema considere la ganancia obtenida por la venta de gas almacenado en tanques para reflejar la posibilidad de aumentar la ganancia en los números finales.\\
+  \textbf{Business Value: 7 - Story Points: 2}
+  
+  \item Como un ingeniero quiero indicarle al sistema que cuando se venda el gas almacenado en los tanques se recalcule el volumen disponible en ellos para poder reflejar el aumento de almacenamiento.\\
+  \textbf{Business Value: 6 - Story Points: 2}
+   
+  \item Como un ingeniero quiero que el sistema permita la reinyección en los pozos con agua y/o gas almacenados en los tanques para tener en cuenta la técnica de aumento de presión utilizado para extender la vida útil del yacimiento y así aumentar la ganancia final.\\
+  \textbf{Business Value: 6 - Story Points: 8}
+  
+  \item Como un ingeniero quiero que el sistema permita la reinyección de agua comprada en los pozos para tener en cuenta en los números finales, el gasto proveniente de utilizar la técnica de aumento de presión.\\
+  \textbf{Business Value: 4 - Story Points: 8}
+  
+  \item Como un ingeniero quiero que el sistema recalcule la composición del producto dentro del yacimiento luego de la reinyección, para que los números finales sean mas cercanos a la realidad.\\
+  \textbf{Business Value: 6 - Story Points: 3}
+  
+  \item Como un ingeniero quiero poder indicarle al sistema cuál es la máxima cantidad que se puede reinyectar por día para evitar superar la capacidad de reinyección del yacimiento.\\
+  \textbf{Business Value: 6 - Story Points: 1}
+  
+  \item Como un ingeniero quiero que el sistema no permita la extracción de ningún pozo durante el mismo día de una reinyección para tener un cálculo de presión mas preciso.\\
+  \textbf{Business Value: 3 - Story Points: 2}
+  
+  \item Como un ingeniero quiero poder indicarle al sistema cuál es el valor crítico de presión de los pozos que indica cuando empieza a ser recomendable reinyectar para evitar gastos innecesarios por reinyecciones no deseables.\\
+  \textbf{Business Value: 5 - Story Points: 2}
+  
+  \item Como un ingeniero quiero poder indicarle al sistema cuál es el valor crítico (porcentaje de petróleo) que indica cuando un yacimiento llega a su fin operativo para finalmente sumarizar la ganancia total y despreciar posibles días futuros cuya actividad sea poco redituable.\\
+  \textbf{Business Value: 9 - Story Points: 2}
+  
+  \item Como un ingeniero quiero que el sistema calcule la ganancia obtenida por la venta del petróleo extraído cada día por cada pozo para aproximar la ganancia total del emprendimiento.\\
+  \textbf{Business Value: 10 - Story Points: 8}
+  
+  \item Como miembro del ministerio quiero poder consultar un log de acciones simuladas sobre un yacimiento para justificar el monto de la recaudación que se le aplicará a la empresa.\\
+  \textbf{Business Value: 10 - Story Points: 8} 
+ 
+  \item Como un ingeniero quiero indicarle al sistema en qué día se inicia la excavación de un pozo para obtener una simulación mas versatil y realista.\\
+  \textbf{Business Value: 6 - Story Points: 2}
+  
+  \item Como un ingeniero quiero indicarle al sistema que inicie la excavación de un pozo lo antes posible para reflejar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 6 - Story Points: 3}
+  
+  \item Como un ingeniero quiero poder indicarle al sistema el alquiler de un RIG para tener en cuenta el costo que conlleva su alquiler durante la excavación de un pozo.\\
+  \textbf{Business Value: 7 - Story Points: 3}
+  
+  \item Como un ingeniero quiero poder indicarle al sistema el gasto a insumir por cada RIG en cuanto al combustible (litros por día) para poder calcular gastos mas fieles a la realidad.\\
+  \textbf{Business Value: 6 - Story Points: 2}
+  
+  \item Como un ingeniero quiero poder indicarle al sistema el gasto a insumir por cada RIG en cuanto al tiempo de perforación (potencia frente al terreno por profundidad del mismo) para poder calcular gastos mas fieles a la realidad.\\
+  \textbf{Business Value: 6 - Story Points: 2}
+
+  \item Como un ingeniero quiero poder indicarle al sistema que simule la excavación de los pozos utilizando la máxima cantidad de RIGS en simultaneo para reflejar una posible estrategia utilizada por el equipo de ingeniería.\\
+  \textbf{Business Value: 5 - Story Points: 5}
+  
+  \item Como un ingeniero quiero poder indicar en qué momento se realiza la construcción de las plantas separadoras para obtener una simulación mas versatil y realista.\\
+  \textbf{Business Value: 4 - Story Points: 5}
+  
+  \item Como un ingeniero quiero poder indicar en qué momento se realiza la construcción de los tanques de almacenamiento para obtener una simulación mas versatil y realista.\\
+  \textbf{Business Value: 4 - Story Points: 5}
+  
+  \item Como un ingeniero quiero indicarle al sistema la cantidad de pozos a utilizar por día durante la simulación de la extracción para obtener resultados mas cercanos a la realidad.\\
+  \textbf{Business Value: 5 - Story Points: 3}
+  
+  \item Como un ingeniero quiero indicarle al simulador que al momento de elegir los pozos a utilizar en el día, seleccione los que tengan mayor presión para reflejar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 5 - Story Points: 5}
+  
+  \item Como un ingeniero quiero indicarle al sistema que siempre que se llegue a un determinado nivel de presión en un pozo, se reinyecte el agua almacenado en los tanques hasta llegar a un nivel específico para considerar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 3 - Story Points: 8}
+  
+  \item Como un ingeniero quiero indicarle al sistema que siempre que se llegue a un determinado nivel de presión en un pozo, se reinyecte el gas almacenado en los tanques hasta llegar a un nivel específico para considerar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 3 - Story Points: 8}
+  
+  \item Como un ingeniero quiero indicarle al sistema que siempre que se llegue a un determinado nivel de presión en un pozo, se reinyecte todo el gas y agua posible que se haya almacenado en los tanques hasta llegar al límite permitido por el yacimiento (comprando agua si es necesario) para considerar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 2 - Story Points: 13}
+  
+  \item Como un ingeniero quiero indicarle al sistema que siempre realice la venta del gas obtenido en la separación del producto para considerar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 5 - Story Points: 5}
+  
+  \item Como un ingeniero quiero indicarle al sistema que nunca se permita reinyectar en los pozos para considerar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 5 - Story Points: 5}
+  
+  \item Como un ingeniero quiero indicarle al sistema que finalice su simulación luego de una cierta cantidad de años que refleja el momento cuando termina la licitación de la empresa ó cuando llegue a la dilución crítica de petróleo para considerar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 2 - Story Points: 3}
+  
+  \item Como un ingeniero quiero indicarle al sistema que finalice su simulación luego de superar cierto monto máximo de gastos ó cuando llegue a la dilución crítica de petróleo para considerar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 2 - Story Points: 3}
+  
+  \item Como un ingeniero quiero indicarle al sistema que finalice su simulación al agotar la presión inicial de los pozos (sin reinyectar) ó cuando llegue a la dilución crítica de petróleo para considerar una posible estrategia del equipo de ingeniería.\\
+  \textbf{Business Value: 2 - Story Points: 3}
+  
+  \item Como un ingeniero quiero indicarle al sistema cuales serán las parcelas del yacimiento donde se excavaran los pozos por medio de un mapa gráfico para facilitar el trabajo del equipo de ingeniería.\\
+  \textbf{Business Value: 1 - Story Points: 21}
 \end{enumerate}
+
+%------------------------------------------------------------------
+
+\subsection{Tareas}
+
+Dados los \textit{user stories} enumerados anteriormente, seleccionaremos tres de ellos con el fin de detallar su motivación, dividirlos en tareas, hablar sobre la estimación en RRHH necesarios y los criterios de aceptación a utilizar.
+
+\subsubsection{Primer user story}
+
+\textbf{20.} Como un ingeniero quiero que el sistema calcule la ganancia obtenida por la venta del petróleo extraído cada día por cada pozo para aproximar la ganancia total del emprendimiento.\\
+\textbf{Business Value: 10 - Story Points: 8}\\
+
+Tareas:
+
+\begin{itemize}
+    \item Dado cada pozo habilitado en el día, calcular cual es la cantidad de producto extraído.
+    \item Dado cada planta separadora, calcular cual es la cantidad de petróleo obtenido del producto bruto.
+    \item Calcular la ganancia total obtenida por el petróleo extraído.
+    \item Registrar el resultado en el log.
+\end{itemize}
+
+\subsubsection{Segundo user story}
+
+\textbf{13.} Como un ingeniero quiero que el sistema permita la reinyección en los pozos con agua y/o gas almacenados en los tanques para tener en cuenta la técnica de aumento de presión utilizado para extender la vida útil del yacimiento y así aumentar la ganancia final.\\
+\textbf{Business Value: 6 - Story Points: 8}\\
+
+Tareas:
+
+\begin{itemize}
+    \item Permitir determinar por parámetro reinyectar agua y/o gas.
+    \item Permitir determinar por parámetro una cantidad a reinyectar.
+    \item Vaciar la cantidad reinyectada de los tanques de almacenamiento correspondientes.
+    \item Recalcular las presiones de los pozos.
+\end{itemize}
+
+Notar que en una primera instancia, este user story no habla sobre recalcular la composición del yacimiento, por lo tanto los valores alterados no se verían reflejados, y en próximas extracciones, las cantidades de petróleo obtenidas, no serían correctas.
+
+Para mejorar el efecto de este user story, se agrega el número 15, que precisamente recomienda implementar el recalculo de composición dentro del yacimiento luego de cada reinyección, con el fin de obtener cantidades mas precisas de petróleo extraído. De esta manera, la ganancia calculada será mas realista y certera.
+
+\subsubsection{Tercer user story}
