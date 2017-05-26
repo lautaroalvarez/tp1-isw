@@ -13,14 +13,14 @@ Metacello new
 Metacello new
   baseline: 'RenoirSt';
   repository: 'github://ba-st/RenoirSt:stable-pharo-50/source';
-  load
+  load.
 
  Metacello new
 	baseline: 'Willow';
 	repository: 'github://ba-st/Willow:master/source';
-	load
+	load.
 
 Metacello new
 	baseline: 'WillowBootstrap';
 	repository: 'github://ba-st/Willow-Bootstrap:master/source';
-	load
+	load.
