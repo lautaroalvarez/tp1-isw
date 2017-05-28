@@ -9,14 +9,18 @@
   \item \textbf{estrategia de selección de excavadoras}: esto indica la forma en la cual se seleccionarán las excavadoras a utilizar (dentro del catálogo que se tiene) y el criterio por el cual se decidirá alquilar o no, dependiendo del momento. Al igual que el valor anterior, se selecciona dentro de opciones que el sistema brinda. Como ejemplos podemos mencionar: alquilar a demanda, alquilar como máximo 3 excavadoras, etc.
 \end{itemize}
 
-\par En este caso nos enfocaremos en un criterio que cuenta con una cantidad máxima de 3 pozos, selecciona las parcelas con menor profunidad al reservorio y alquila excavadoras a demanda. El sistema se encuentra simulando el día 19/05/2017 y hasta el momento se construyeron 2 pozos.
-\par Como vemos en el diagrama de secuencias de la figura \ref{fig:dia_sec_1_1}, el sistema de ejecución de criterios le envía un mensaje al criterio para que se ejecute pasándole una referencia al sistema de simulación, ya que es él quien conoce al sistema de construcción (junto con otros objetos que pueda llegar a necesitar). Este criterio es quien consulta la cantidad de pozos construidos hasta el momento y decide si se intentará construír uno nuevo. En este caso en particular, al haber 2 construidos y tener como cantidad máxima 3, le manda un mensaje a la estrategia de selección de excavadoras que
+\subsubsection{Escenario}
+\par En este caso nos enfocaremos en un criterio que cuenta con una cantidad máxima de 3 pozos, selecciona las parcelas con menor profunidad al reservorio y alquila excavadoras a demanda. El sistema se encuentra simulando el día 19/05/2017 y hasta el momento se construyeron 2 pozos. También contamos con excavadoras en el catálogo.
+
+\subsubsection{Funcionamiento General}
+\par Como vemos en el diagrama de secuencias de la figura \ref{fig:dia_sec_const_pozo_1_1}, el sistema de ejecución de criterios le envía un mensaje al criterio para que se ejecute pasándole una referencia al sistema de simulación, ya que es él quien conoce al sistema de construcción (junto con otros objetos que pueda llegar a necesitar). Este criterio es quien consulta la cantidad de pozos construidos hasta el momento y decide si se intentará construír uno nuevo. Al haber 2 pozos construidos y tener como cantidad máxima 3, le manda un mensaje a la estrategia de selección de excavadoras para que le devuelva una excavadora disponible. Como el sistema cuenta con un catálogo de excavadoras no vacío y la estrategia permite alquilar a demanda, retorna la excavadora \textit{excavadora396}. Del mismo modo, el criterio le envía un mensaje a la estrategia de selección de parcelas para que se ejecute y le retorne una parcela (en particular la \textit{parcela45-33}). Luego, consulta al sistema de simulación la fecha actual (\textit{19/05/2017}) y le envía un mensaje al sistema de construcción para que registre un plan de construcción de pozo en esa fecaha, utilizando la excavadora \textit{excavadora396} en la parcela \textit{parcela45-33}.
+\par El funcionamiento interno de la estrategía de selección de parcelas se explica detalladamente a continuación en la sección \ref{sec:dia_sec_estr_selec_parc}. Mientras que el de la estrategia de selección de excavadoras se detalla en la sección \ref{sec:dia_sec_estr_selec_exc}.
 
 \begin{landscape}
   \begin{figure}[ht]
   \centering
     \begin{sequencediagram}
-      \newthread{entorno}{\shortstack{e\\n\\t\\o\\r\\n\\o}}
+      \newthread{entorno}{\shortstack{Entorno}}
       \newinst{e1}{\shortstack{elSistema\\DeEjecucion\\DeCriterios :\\SistemaDeEjecucion\\DeCriterios}}
       \newinst{e2}{\shortstack{elCriterio\\DeConstrucción\\DePozo :\\CriterioDe\\Construccion\\DePozo}}
       \newinst{e3}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
@@ -45,20 +49,26 @@
           \end{call}
           \postlevel
           \postlevel
-          \begin{call}{e2}{\shortstack{\textbf{comenzarConstruccionDe}\\\textbf{PozoEn:} parcela45-33\\\textbf{usando:} excavadora396\\\textbf{al:} 19/05/2017}}{e4}{unaParcela}
+          \begin{call}{e2}{\shortstack{\textbf{comenzarConstruccionDe}\\\textbf{PozoEn:} parcela45-33\\\textbf{usando:} excavadora396\\\textbf{al:} 19/05/2017}}{e4}{}
           \end{call}
         \end{call}
       \end{call}
     \end{sequencediagram}
     \caption{Diagrama de secuencias de la ejecución de un criterio de construcción de pozo.}
-    \label{fig:dia_sec_1_1}
+    \label{fig:dia_sec_const_pozo_1_1}
   \end{figure}
 \end{landscape}
+
+
+\subsubsection{Funcionamiento de Estrategia de selección de parcelas}
+\label{sec:dia_sec_estr_selec_parc}
+\par Vamos a pasar a explicar el funcionamiento de la estrategia de selección de parcelas utilizada en el criterio antes mencionado. El diagrama de secuencia se puede ver en la figura \ref{fig:dia_sec_const_pozo_1_2}.
+\par La estrategia recibe el mensaje \textit{ejecutarEn} recibiendo como parámetro el sistema de simulación (aquí instanciado como \text{elSimulador}). En primer lugar, le envía un mensaje a \textit{elSimulador} pidiéndole el sistema de gestión de parcelas, que es quien conoce las parcelas y en particular las libres (sin pozo). Luego, le envía un mensaje a este sistema de gestión de parcelas pidiéndole un listado de parcelas libres. De esta manera recibe la lista de parcelas \textit{laListaDeParcelasLibres}. Antes de continuar, le envía un mensaje a \textit{laListaDeParcelasLibre} consultándole su tamaño (cantidad de elementos). En este escenario sabemos que el sistema cuenta con parcelas libres, y en particular retorna 50. A esta lista le envía un mensaje para que se ordene, pasándole como parámetro un comparador de elementos (en este caso parcelas). Esta estrategia se basa en seleccionar las parcelas menos profundas, por lo que como comparador le envía un bloque de código que compara las parcelas por profundidad. De esta manera, la lista retorna una nueva lista de parcelas ordenada por profundidad (mencionada en el diagrama como \textit{laListaOrdenadaDeParcelasLibres}). A esta nueva lista se le envía un mensaje pidiéndole el primer elemento. La misma retorna la parcela \textit{parcela45-33}, entonces la estrategia envía un mensaje al sistema de gestión de parcelas avisándole que va a utilizar la parcela \textit{parcela45-33} (este mensaje se llama \textit{utilizarParcela} y recibe como parámetro una parcela). Para finalizar retorna la parcela \textit{parcela45-33}.
 
 \begin{figure}[ht]
 \centering
   \begin{sequencediagram}
-    \newthread{entorno}{\shortstack{e\\n\\t\\o\\r\\n\\o}}
+    \newthread{entorno}{\shortstack{Entorno}}
     \newinst{e1}{\shortstack{laEstrategia\\DeParcelas\\MenosProfundas :\\EstrategiaDe\\ParcelasMenos\\Profundas}}
     \newinst{e2}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
     \newinst{e3}{\shortstack{elSistema\\DeParcelas :\\SistemaDe\\GestiónDe\\Parcelas}}
@@ -67,10 +77,8 @@
 
     \postlevel
     \postlevel
-    \postlevel
     \begin{call}{entorno}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e1}{parcela45-33}
-      \begin{call}{e1}{\shortstack{\textbf{sistemaDeGestion}\\\textbf{DeParcelas}}}{e3}{\shortstack{elSistemaDeParcelas}}
-        \postlevel
+      \begin{call}{e1}{\shortstack{\textbf{sistemaDeGestion}\\\textbf{DeParcelas}}}{e3}{\shortstack{elSistemaDeParcelas}}}
       \end{call}
       \begin{call}{e1}{\textbf{parcelasLibres}}{e3}{laListaDeParcelasLibres}
       \end{call}
@@ -85,25 +93,27 @@
     \end{call}
   \end{sequencediagram}
   \caption{Diagrama de secuencias de la ejecución de la estrategia de selección de pozos menos profundos.}
-  \label{fig:dia_sec_1_2}
+  \label{fig:dia_sec_const_pozo_1_2}
 \end{figure}
+
+\subsubsection{Funcionamiento de Estrategia de selección de excavadoras}
+\label{sec:dia_sec_estr_selec_exc}
+\par La figura \ref{fig:dia_sec_const_pozo_1_3} muestra el diagrama de secuencias de la ejecución de la estrategia de selección de excavadoras a demanda. Esta estrategia simplemente busca en el catálogo de excavadoras una y la alquila, sin tener en cuenta el precio o las excavadoras previamente alquiladas con tiempo ocioso.
+\par La estrategia recibe el mensaje \textit{ejecutarEn}, junto con un sistema de simulación como parámetro (mencionado como \textit{elSimulador}). Le pide a \textit{elSimulador} el sistema de gestión de excavadoras (quien conoce el catálogo y puede alquilar excavadoras). Luego le envía un mensaje a este sistema consultando consultándole las excavadoras disponibles (items del catálogo de excavadoras). De esta manera recibe una lista de excavadoras (en el diagrama \textit{laListaDeExcavadorasDisponibles}), a la cual le consulta su tamaño (cantidad de excavadoras). En el escenario actual, sabemos que el sistema cuenta con un catálogo con excavadoras (en particular 3). Entonces, a \textit{laListaDeExcavadorasDisponibles} se le envía un mensaje pidiendo el primer elemento de la lista, la cual retorna \textit{itemExcavadora10}. A este item del catálogo se le envía un mensaje consultado su modelo (\textit{modeloDeExcavadora}), el cual retorna \textit{M-123}. De esta manera ya se tiene seleccionado un modelo de excavadora del catálogo, y como la estrategia se basa en alquilar a demanda, le envía al sistema de gestión de excavadoras el mensaje \textit{alquilarExcavadoraDeModelo} pasándole como parámetro el modelo \textit{M-123}. Al recibir este mensaje, el sistema de gestión de excavadoras crea una nueva excavadora (del modelo \textit{M-123}) y la retorna. La estrategia recibe a la excavadora recién alquilada \textit{excavadora396} y la retorna.
 
 \begin{figure}[ht]
 \centering
   \begin{sequencediagram}
-    \newthread{entorno}{\shortstack{e\\n\\t\\o\\r\\n\\o}}
-    \newinst{e1}{\shortstack{laEstrategia\\DeAlquiler\\ADemanda :\\EstrategiaDe\\AlquilerA\\Demanda}}
+    \newthread{entorno}{\shortstack{Entorno}}
+    \newinst{e1}{\shortstack{laEstrategiaDe\\AlquilerADemanda :\\EstrategiaDeAlquiler\\ADemanda}}
     \newinst{e2}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
     \newinst{e3}{\shortstack{elSistema\\DeExcavadras :\\SistemaDe\\GestiónDe\\Excavadoras}}
     \newinst{e4}{\shortstack{laListaDe\\Excavadoras\\Disponibles :\\Lista}}
-    \newinst{e4}{\shortstack{itemExcavadora10 :\\Excavadora}}
+    \newinst{e5}{\shortstack{itemExcavadora10 :\\Excavadora}}
 
-    \postlevel
-    \postlevel
     \postlevel
     \begin{call}{entorno}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e1}{excavadora396}
       \begin{call}{e1}{\shortstack{\textbf{sistemaDeGestion}\\\textbf{DeExcavadoras}}}{e3}{\shortstack{elSistemaDeExcavadoras}}
-        \postlevel
       \end{call}
       \begin{call}{e1}{\textbf{excavadorasDisponibles}}{e3}{\shortstack{laListaDeExcavadoras\\Disponibles}}
         \postlevel
@@ -120,5 +130,5 @@
     \end{call}
   \end{sequencediagram}
   \caption{Diagrama de secuencias de la ejecución de la estrategia de selección de excavadora alquilando a demanda.}
-  \label{fig:dia_sec_1_3}
+  \label{fig:dia_sec_const_pozo_1_3}
 \end{figure}
