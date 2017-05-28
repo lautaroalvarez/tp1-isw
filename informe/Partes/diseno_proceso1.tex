@@ -1,0 +1,124 @@
+\subsection{Ejecución de un criterio de construcción de pozos}
+
+\par A continuación vamos a mostrar el diagrama de secuencias de la ejecución de un cierto criterio de construcción de pozos. Estos criterios están compuestos por tres datos importantes que pueden ser modificados:
+
+\begin{itemize}
+  \item \textbf{cantidad de pozos}: este número indica el máximo de pozos que se podrán construir. El criterio se ejcutará cada día intentando construir hasta lograr llegar a esa cantidad. Pero de igual forma, puede que el entorno y otras decisiones le impidan alcanzar este valor. Es un valor libre y a elección del usuario.
+  \item \textbf{estrategia de selección de parcelas}: esto indica la forma en la cual se van a seleccionar las parcelas. Por ejemplo: en orden de profundidad, por su terreno, aleatorio, etc. Este valor se selecciona de los que el sistema permita, ya que conlleva una lógica interna.
+
+  \item \textbf{estrategia de selección de excavadoras}: esto indica la forma en la cual se seleccionarán las excavadoras a utilizar (dentro del catálogo que se tiene) y el criterio por el cual se decidirá alquilar o no, dependiendo del momento. Al igual que el valor anterior, se selecciona dentro de opciones que el sistema brinda. Como ejemplos podemos mencionar: alquilar a demanda, alquilar como máximo 3 excavadoras, etc.
+\end{itemize}
+
+\par En este caso nos enfocaremos en un criterio que cuenta con una cantidad máxima de 3 pozos, selecciona las parcelas con menor profunidad al reservorio y alquila excavadoras a demanda. El sistema se encuentra simulando el día 19/05/2017 y hasta el momento se construyeron 2 pozos.
+\par Como vemos en el diagrama de secuencias de la figura \ref{fig:dia_sec_1_1}, el sistema de ejecución de criterios le envía un mensaje al criterio para que se ejecute pasándole una referencia al sistema de simulación, ya que es él quien conoce al sistema de construcción (junto con otros objetos que pueda llegar a necesitar). Este criterio es quien consulta la cantidad de pozos construidos hasta el momento y decide si se intentará construír uno nuevo. En este caso en particular, al haber 2 construidos y tener como cantidad máxima 3, le manda un mensaje a la estrategia de selección de excavadoras que
+
+\begin{landscape}
+  \begin{figure}[ht]
+  \centering
+    \begin{sequencediagram}
+      \newthread{entorno}{\shortstack{e\\n\\t\\o\\r\\n\\o}}
+      \newinst{e1}{\shortstack{elSistema\\DeEjecucion\\DeCriterios :\\SistemaDeEjecucion\\DeCriterios}}
+      \newinst{e2}{\shortstack{elCriterio\\DeConstrucción\\DePozo :\\CriterioDe\\Construccion\\DePozo}}
+      \newinst{e3}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
+      \newinst{e4}{\shortstack{elSistema\\DeConstrucción :\\SistemaDe\\Construccion}}
+      \newinst{e5}{\shortstack{laListaDe\\PlanesActuales :\\Lista}}
+      \newinst{e6}{\shortstack{laEstrategia\\DeExcavadoras :\\Estrategia\\DeAlquiler\\ADemanda}}
+      \newinst{e7}{\shortstack{laEstrategia\\DeExcavadoras :\\Estrategia\\DeParcelas\\MenosProfundas}}
+
+      \postlevel
+      \postlevel
+      \postlevel
+      \begin{call}{entorno}{\shortstack{\textbf{ejecutar:}\\elCriterioDe\\Construcción\\DePozo}}{e1}{}
+        \begin{call}{e1}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e2}{}
+          \begin{call}{e2}{\shortstack{\textbf{sistemaDe}\\\textbf{Construccion}}}{e3}{\shortstack{elSistemaDe\\Construcción}}
+            \postlevel
+          \end{call}
+          \begin{call}{e2}{\textbf{planesDeConstruccionDePozo}}{e4}{laListaDePlanesActuales}
+          \end{call}
+          \begin{call}{e2}{\textbf{size}}{e5}{3}
+          \end{call}
+          \begin{call}{e2}{\textbf{ejecutarEn:} elSimulador}{e6}{excavadora396}
+          \end{call}
+          \begin{call}{e2}{\textbf{ejecutarEn:} elSimulador}{e7}{parcela45-33}
+          \end{call}
+          \begin{call}{e2}{\textbf{fechaActual}}{e3}{19/05/2017}
+          \end{call}
+          \postlevel
+          \postlevel
+          \begin{call}{e2}{\shortstack{\textbf{comenzarConstruccionDe}\\\textbf{PozoEn:} parcela45-33\\\textbf{usando:} excavadora396\\\textbf{al:} 19/05/2017}}{e4}{unaParcela}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sequencediagram}
+    \caption{Diagrama de secuencias de la ejecución de un criterio de construcción de pozo.}
+    \label{fig:dia_sec_1_1}
+  \end{figure}
+\end{landscape}
+
+\begin{figure}[ht]
+\centering
+  \begin{sequencediagram}
+    \newthread{entorno}{\shortstack{e\\n\\t\\o\\r\\n\\o}}
+    \newinst{e1}{\shortstack{laEstrategia\\DeParcelas\\MenosProfundas :\\EstrategiaDe\\ParcelasMenos\\Profundas}}
+    \newinst{e2}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
+    \newinst{e3}{\shortstack{elSistema\\DeParcelas :\\SistemaDe\\GestiónDe\\Parcelas}}
+    \newinst{e4}{\shortstack{laListaDe\\ParcelasLibres :\\Lista}}
+    \newinst{e5}{\shortstack{laLista\\OrdenadaDe\\ParcelasLibres :\\Lista}}
+
+    \postlevel
+    \postlevel
+    \postlevel
+    \begin{call}{entorno}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e1}{parcela45-33}
+      \begin{call}{e1}{\shortstack{\textbf{sistemaDeGestion}\\\textbf{DeParcelas}}}{e3}{\shortstack{elSistemaDeParcelas}}
+        \postlevel
+      \end{call}
+      \begin{call}{e1}{\textbf{parcelasLibres}}{e3}{laListaDeParcelasLibres}
+      \end{call}
+      \begin{call}{e1}{\textbf{size}}{e4}{50}
+      \end{call}
+      \begin{call}{e1}{\textbf{ordenarPor:} unComparadorDeParcelas}{e4}{laListaOrdenadaDeParcelasLibres}
+      \end{call}
+      \begin{call}{e1}{\textbf{first}}{e5}{parcela45-33}
+      \end{call}
+      \begin{call}{e1}{\textbf{utilizarParcela:} parcela45-33}{e3}{}
+      \end{call}
+    \end{call}
+  \end{sequencediagram}
+  \caption{Diagrama de secuencias de la ejecución de la estrategia de selección de pozos menos profundos.}
+  \label{fig:dia_sec_1_2}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+  \begin{sequencediagram}
+    \newthread{entorno}{\shortstack{e\\n\\t\\o\\r\\n\\o}}
+    \newinst{e1}{\shortstack{laEstrategia\\DeAlquiler\\ADemanda :\\EstrategiaDe\\AlquilerA\\Demanda}}
+    \newinst{e2}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
+    \newinst{e3}{\shortstack{elSistema\\DeExcavadras :\\SistemaDe\\GestiónDe\\Excavadoras}}
+    \newinst{e4}{\shortstack{laListaDe\\Excavadoras\\Disponibles :\\Lista}}
+    \newinst{e4}{\shortstack{itemExcavadora10 :\\Excavadora}}
+
+    \postlevel
+    \postlevel
+    \postlevel
+    \begin{call}{entorno}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e1}{excavadora396}
+      \begin{call}{e1}{\shortstack{\textbf{sistemaDeGestion}\\\textbf{DeExcavadoras}}}{e3}{\shortstack{elSistemaDeExcavadoras}}
+        \postlevel
+      \end{call}
+      \begin{call}{e1}{\textbf{excavadorasDisponibles}}{e3}{\shortstack{laListaDeExcavadoras\\Disponibles}}
+        \postlevel
+      \end{call}
+      \begin{call}{e1}{\textbf{size}}{e4}{3}
+      \end{call}
+      \begin{call}{e1}{\textbf{first}}{e4}{itemExcavadora10}
+      \end{call}
+      \begin{call}{e1}{\textbf{modeloDeExcavadora}}{e5}{M-123}
+      \end{call}
+      \postlevel
+      \begin{call}{e1}{\shortstack{\textbf{alquilarExcavadoraDe}\\\textbf{Modelo:} M-123}}{e3}{excavadora396}
+      \end{call}
+    \end{call}
+  \end{sequencediagram}
+  \caption{Diagrama de secuencias de la ejecución de la estrategia de selección de excavadora alquilando a demanda.}
+  \label{fig:dia_sec_1_3}
+\end{figure}
