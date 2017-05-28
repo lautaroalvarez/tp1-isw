@@ -1,0 +1,89 @@
+\subsection{Ejecución de un criterio de construcción de plantas}
+
+\subsubsection{Escenario}
+
+\subsubsection{Funcionamiento General}
+
+\begin{figure}[ht]
+\centering
+  \begin{sequencediagram}
+    \newthread{entorno}{\shortstack{Entorno}}
+    \newinst{e1}{\shortstack{elCriterioDe\\Construcción\\DePlantas :\\CriterioDe\\Construcción\\DeEdificacion}}
+    \newinst{e2}{\shortstack{laEstrategia\\DeConstruccion\\DePlantas :\\EstrategiaDe\\ConstruccionDe\\PlantaAlInicio}}
+    \newinst{e3}{\shortstack{laEstrategia\\DeCantidad\\DePlantas :\\EstrategiaDe\\PlantasLimitadas}}
+    \newinst{e4}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
+    \newinst{e5}{\shortstack{elSistemaDe\\Construcción :\\SistemaDe\\Construccion}}
+
+    \postlevel
+    \postlevel
+    \begin{call}{entorno}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e1}{}
+      \begin{call}{e1}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e2}{}
+        \begin{callself}{e2}{\textbf{esPrimerDia}}{Verdadero}
+        \end{callself}
+
+        \postlevel
+        \begin{call}{e2}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e3}{Falso}
+        \end{call}
+        \begin{callself}{e2}{\textbf{nuevaPlantaEn:} elSimulador}{}
+        \end{callself}
+        \postlevel
+        \begin{call}{e2}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e3}{Verdadero}
+        \end{call}
+
+        \begin{callself}{e2}{\textbf{hayUnPozoLibreEn:} elSimulador}{Verdadero}
+        \end{callself}
+        \begin{callself}{e2}{\textbf{pozoLibreEn:} elSimulador}{elPozo1}
+        \end{callself}
+        \begin{callself}{e2}{\textbf{plantaMenosUsada}}{laPlantaProc1}
+        \end{callself}
+        \begin{call}{e2}{\textbf{sistemaDeConstruccion}}{e4}{elSistemaDeConstrucción}
+        \end{call}
+        \begin{call}{e2}{\textbf{conectar:} elPozo1 \textbf{a:} laPLantaProc1}{e5}{}
+        \end{call}
+
+      \end{call}
+    \end{call}
+  \end{sequencediagram}
+  \caption{Diagrama de secuencias de la ejecución de un criterio de construcción de plantas procesadoras todas el primer día.}
+  \label{fig:dia_sec_const_planta_1_1}
+\end{figure}
+
+\subsubsection{Funcionamiento de Estrategia de construcción de plantas ante el mensaje nuevaPlantaEn}
+
+\begin{landscape}
+  \begin{figure}[ht]
+  \centering
+    \begin{sequencediagram}
+      \newthread{entorno}{\shortstack{Entorno}}
+      \newinst{e1}{\shortstack{laEstrategia\\DeConstruccion\\DePlantas :\\EstrategiaDe\\ConstruccionDe\\PlantaAlInicio}}
+      \newinst{e2}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
+      \newinst{e3}{\shortstack{10/05/2017 :\\Fecha}}
+      \newinst{e4}{\shortstack{laEstrategia\\DeSelección\\DePlantas :\\EstrategiaDe\\PlantaCon\\MayorCapacidad}}
+      \newinst{e5}{\shortstack{itemPlanta3 :\\ItemDeConstruccion}}
+      \newinst{e6}{PlantaProcesadora}
+      \newinst{e7}{\shortstack{elSistemaDe\\Construcción :\\SistemaDe\\Construccion}}
+
+      \postlevel
+      \postlevel
+      \begin{call}{entorno}{\shortstack{\textbf{nuevaPlantaEn:}\\elSimulador}}{e1}{}
+        \begin{call}{e1}{\textbf{fechaActual}}{e2}{10/05/2017}
+        \end{call}
+        \begin{call}{e1}{\textbf{ejecutarEn:} elSimulador}{e4}{itemPlanta3}
+        \end{call}
+        \begin{call}{e1}{\textbf{modeloDeItem}}{e5}{P-A2}
+        \end{call}
+        \begin{call}{e1}{\textbf{plazoDeConstruccion}}{e5}{20}
+        \end{call}
+        \begin{call}{e1}{\textbf{addDays:} 20}{e3}{30/05/2017}
+        \end{call}
+        \begin{call}{e1}{\textbf{new deModelo:} P-A2}{e6}{laPlantaProc1}
+        \end{call}
+        \postlevel
+        \begin{call}{e1}{\shortstack{\textbf{comenzarConstruccionDePlantaProcesadora:} laPlantaProc1 \\ \textbf{arrancandoEl:} 10/05/2017 \textbf{yFinalizando:} 30/05/2017}}{e7}{}
+        \end{call}
+      \end{call}
+    \end{sequencediagram}
+    \caption{Diagrama de secuencias de la construcción de una nueva planta por medio de una estrategia de construcción de plantas procesadoras todas el primer día.}
+    \label{fig:dia_sec_const_planta_1_2}
+  \end{figure}
+\end{landscape}
