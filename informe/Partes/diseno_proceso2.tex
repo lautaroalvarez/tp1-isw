@@ -1,24 +1,42 @@
 \subsection{Ejecución de un criterio de construcción de plantas}
 
+\par Mostraremos a continuación el diagrama de secuencias que muestra la ejecución de un criterio de construcción de plantas procesadoras. Este tipo de criterios se crean a partir de una estrategia de construcción de plantas, la cual consta de dos partes importantes:
+
+\begin{itemize}
+  \item \textbf{estrategia de cantidad de plantas procesadoras}: esta puede ser de dos tipos: limitada o ilimitada. Las de tipo ilimitada permiten construir infinitas plantas procesadoras, mientras que las limitadas se crean con un número que indica la cantidad máxima de plantas procesadoras que se podrán construir a lo largo de toda la simulación.
+  \item \textbf{estrategia de selección de plantas procesadoras}: la cual se encarga de seleccionar del catálogo, que se encuentra precargado, las plantas que se van a construir. Por ejemplo: se pueden elegir las mas baratas, o las que tengan mayor volumen de procesamiento diario, etc.
+\end{itemize}
+
 \subsubsection{Escenario}
+\par En este caso nos encontramos con un criterio compuesto por una estrategia de construcción de plantas que construye todas las plantas procesadoras que pueda el primer día de simulación, mientras que el resto de los días no construye mas. Para controlar la cantidad de plantas procesadoras a construir se utiliza una estrategia que limita la cantidad máxima a 1. La estrategia de selección de plantas procesadoras utilizada selecciona del catálogo las plantas ordenada por capacidad de procesamiento diario, de mayor a menor.
+\par Al momento de recibirse este mensaje, el sistema de simulación recibido como parámetro se encuentra en el primer día de simulación, con fecha 10/05/2017. El mismo cuenta con un pozo de extracción construído y sin ninguna planta procesadora, ya que es el primer día y los criterios se ejecutan una única vez por día.
 
 \subsubsection{Funcionamiento General}
+\par Bajo el escenario mencionado, sabemos que queda una planta procesadora por construir y hay un pozo de extracción que no está conectado a ninguna planta procesadora. Veremos a continuación como el funcionamiento del criterio lleva a que se construya una planta procesadora y se la contecte a el pozo.
+\par Para el criterio de construcción de plantas procesadoras que estamos mostrando en el escenario elegido, podemos dividir el funcionamiento en dos partes:
+\begin{itemize}
+  \item Construcción de plantas: aquí se consulta a la estrategia de cantidad de plantas y luego se construyen las plantas que se requieran. Esta parte se realiza solo el primer día de ejecución.
+  \item Conexión de plantas a pozos libres: aquí se verifica que todos los pozos del sistema se encuentren conectados a una planta procesadora. Esto se realiza todos los días. Si se encuentra un pozo libre se lo conecta a la planta procesadora con menor cantidad de conexiones. Esto es una determinación tomada para simplificar el funcionamiento general en una primer versión del sistema.
+\end{itemize}
+\par Con el panorama general ya planteado, pasaremos entonces a explicar el diagrama de secuencia de la figura \ref{fig:dia_sec_const_planta_1_1}, que muestra el funcionamiento del criterio de construcción de plantas al recibir el mensaje de ejecución.
+\par Llega el mensaje \textit{ejecutarEn}, junto con \textit{elSimulador} como parámetro al criterio de construccion de edificación \textit{elCriterioDeConstrucciónDePlantas}. Este criterio, lo único que hace es redirigirlo a su estrategia de construcción de plantas (\textit{laEstrategiaDeConstrucciónDePlantas}) con un mensaje de igual nombre. La estrategia recibe este mensaje y lo primero que hace es consultarse a si mismo si se encuentra en el primer día de simulación, esto para diferenciar qué partes (de las dos antes mencionadas) debe realizar. Recibe \textit{Verdadero}, por lo cual va a realizar ambas partes.
+\par Primero la parte de construcción de plantas. Para esto le envía un mensaje a \textit{laEstrategiaDeCantidadDePlantas} para consultarle si debe intentar construir una planta procesadora. En caso de que ya se haya llegado al límite, la estrategia le responderá \textit{Verdadero}. Pero sobre el escenario planteado queda una planta procesadora por construir, por lo que responde \textit{Falso}. Por esto, se envía un mensaje a si mismo: \textit{nuevaPlantaEn}, pasándose \textit{elSimulador} como parámetro. El funcionamiento de este mensaje se explica detalladamente en la sección \ref{sec:dia_sec_estr_nuevaplanta}. Al retornar, vuelve a consultar a la estrategia \textit{laEstrategiaDeCantidadDePlantas} para saber si debe volver a intentar construir una nueva planta procesadora. En este caso, responde \textit{Verdadero} (ya que se alcanzó el máximo), lo que implica que no se deben construir mas.
+\par A continuación, procede a realizar la parte dos: conexión de plantas a pozos libre. La estrategia \textit{laEstrategiaDeConstrucciónDePlantas} se envía un mensaje a si mismo consultando si hay pozos libres en el sistema (por medio del mensaje \textit{hayUnPozoLibreEn}). En el escenario planteado, se retorna \textit{Verdadero} y en consecuencia se envía otro mensaje pidiendo un pozo libre (sabiendo que hay uno). Este mensaje es \textit{pozoLibreEn}, y envía el sistema de simulación como parámetro para poder averiguar lo necesario. De este mensaje se retorna el pozo \textit{elPozo1}. Luego, la estrategia se consulta a si mismo por la planta menos usada, por medio del mensaje \textit{plantaMenosUsada}. Este mensaje retorna la única planta y por lo tanto la que cuenta con menor cantidad de pozos conectados: \textit{laPlantaProc1}. Para finalizar, le pide al sistema de simulación el sistema de construcción por medio del mensaje \textit{elSistemaDeConstrucción} y le envía el mensaje \textit{conectar: elPozo1 a: laPlantaProc1}.
 
 \begin{figure}[ht]
 \centering
   \begin{sequencediagram}
-    \newthread{entorno}{\shortstack{Entorno}}
-    \newinst{e1}{\shortstack{elCriterioDe\\Construcción\\DePlantas :\\CriterioDe\\Construcción\\DeEdificacion}}
-    \newinst{e2}{\shortstack{laEstrategia\\DeConstruccion\\DePlantas :\\EstrategiaDe\\ConstruccionDe\\PlantaAlInicio}}
+    \newinst{e1}{\shortstack{elCriterioDe\\Construcción\\DePlantas :\\CriterioDe\\Construccion\\DeEdificacion}}
+    \newinst{e2}{\shortstack{laEstrategia\\DeConstrucción\\DePlantas :\\EstrategiaDe\\ConstruccionDe\\PlantaAlInicio}}
     \newinst{e3}{\shortstack{laEstrategia\\DeCantidad\\DePlantas :\\EstrategiaDe\\PlantasLimitadas}}
     \newinst{e4}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
     \newinst{e5}{\shortstack{elSistemaDe\\Construcción :\\SistemaDe\\Construccion}}
 
     \postlevel
     \postlevel
-    \begin{call}{entorno}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e1}{}
+    \begin{call}{}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e1}{}
       \begin{call}{e1}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e2}{}
-        \begin{callself}{e2}{\textbf{esPrimerDia}}{Verdadero}
+        \begin{callself}{e2}{\textbf{esElPrimerDiaEn:} elSimulador}{Verdadero}
         \end{callself}
 
         \postlevel
@@ -38,7 +56,7 @@
         \end{callself}
         \begin{call}{e2}{\textbf{sistemaDeConstruccion}}{e4}{elSistemaDeConstrucción}
         \end{call}
-        \begin{call}{e2}{\textbf{conectar:} elPozo1 \textbf{a:} laPLantaProc1}{e5}{}
+        \begin{call}{e2}{\textbf{conectar:} elPozo1 \textbf{a:} laPlantaProc1}{e5}{}
         \end{call}
 
       \end{call}
@@ -49,12 +67,14 @@
 \end{figure}
 
 \subsubsection{Funcionamiento de Estrategia de construcción de plantas ante el mensaje nuevaPlantaEn}
+\label{sec:dia_sec_estr_nuevaplanta}
+\par El diagrama de secuencia que se explicará a continuación corresponde con la figura \ref{fig:dia_sec_const_planta_1_2}.
+\par La estrategia recibe el mensaje \textit{nuevaPlantaEn} junto con \textit{elSimulador} (un sistema de simulación). Lo primero que hace es consultar la fecha actual de simulación. Para esto envía el mensaje \textit{fechaDeSimulacion} a \textit{elSimulador}, el cual retorna \textit{10/05/2017}. Luego le envía un mensaje a la estrategia de selección de de plantas que conoce para que se ejecute y le retorne un item del catálogo de plantas procesadoras. En este caso, retorna el item \textit{itemPlanta3}, debido a que es la planta con mayor nivel de procesamiento diario. Tras seleccionar un item del catálogo, le envía el mensaje \textit{modeloDeItem} para obtener el modelo de planta. En el escenario planteado se retorna el modelo \textit{P-A2}. También le envía el mensaje \textit{plazoDeConstruccion}, el cual retorna \textit{20} (cantidad de días necesarios para la construcción de una planta de este modelo). Luego, le envía el mensaje \textit{addDays: 20} a la fecha \textit{10/05/2017} (que antes había obtenido), el cual retorna una nueva fecha \textit{30/05/2017}. Finalmente crea una nueva instancia de una planta procesadora pasándole \textit{P-A2} (el modelo antes obtenido), el cual retorna \textit{laPlantaProc1} y le envía un mensaje al sistema de construcción para que cree el plan de construcción de planta procesadora: \textit{comenzarConstruccionDePlantaProcesadora: laPlantaProc1 arrancandoEl: 10/05/2017 yFinalizando: 30/05/2017}.
 
 \begin{landscape}
   \begin{figure}[ht]
   \centering
     \begin{sequencediagram}
-      \newthread{entorno}{\shortstack{Entorno}}
       \newinst{e1}{\shortstack{laEstrategia\\DeConstruccion\\DePlantas :\\EstrategiaDe\\ConstruccionDe\\PlantaAlInicio}}
       \newinst{e2}{\shortstack{elSimulador :\\SistemaDe\\Simulacion}}
       \newinst{e3}{\shortstack{10/05/2017 :\\Fecha}}
@@ -65,8 +85,8 @@
 
       \postlevel
       \postlevel
-      \begin{call}{entorno}{\shortstack{\textbf{nuevaPlantaEn:}\\elSimulador}}{e1}{}
-        \begin{call}{e1}{\textbf{fechaActual}}{e2}{10/05/2017}
+      \begin{call}{}{\shortstack{\textbf{nuevaPlantaEn:}\\elSimulador}}{e1}{}
+        \begin{call}{e1}{\textbf{fechaDeSimulacion}}{e2}{10/05/2017}
         \end{call}
         \begin{call}{e1}{\textbf{ejecutarEn:} elSimulador}{e4}{itemPlanta3}
         \end{call}
