@@ -1,5 +1,4 @@
-\subsection{Diseño Alternativo}
-
+\subsection{Diseño Inicial}
 El modelo se centra en un \texttt{SistemaDeGestionDePozos} que es el principal de los objetos y el que va a tener en cuenta toda la parametr\'ia dada por los ingenieros para simular el problema.
 
 Este va a almacenar una colecci\'on de \texttt{PlanDeConstruccion} por cada cosa que quiera construir el ingeniero (Planta procesadora, pozo de extracci\'on o tanques de almacenamiento). Tambi\'en se encarga de llevar el \texttt{CatalogoDeExcavadoras} y los \texttt{EventoSobrePozo}, es decir, las extracciones e inyecciones. La l\'ogica de la medici\'on de presi\'on y potencial la extrajimos en un objeto \texttt{CalculadoraDePresion} aparte porque el enunciado ped\'ia que fuera f\'acilmente parametrizable.
@@ -19,9 +18,13 @@ Los atributos del resto de los objetos \texttt{PlantaProcesadora}, \texttt{PozoD
 \begin{figure}[H]
   \centering
   \hspace{-3.5cm}\includegraphics[angle=90,scale=0.4]{Partes/Imagenes/diagrama_alternativo1.png}
+    \caption{Diagrama de clases de la construcción de los edificios y el estado de los pozos.}
+    \label{fig:dia_cla_gestion_1_1}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \hspace{-3.5cm}\includegraphics[angle=90,scale=0.5]{Partes/Imagenes/diagrama_alternativo1.png}
+  \hspace{-3.5cm}\includegraphics[angle=90,scale=0.35]{Partes/Imagenes/diagrama_alternativo1.png}
+    \caption{Diagrama de clases que muestra el diseño de la construcción de los pozos y como se consulta su estado.}
+    \label{fig:dia_cla_const_1_1}
 \end{figure}

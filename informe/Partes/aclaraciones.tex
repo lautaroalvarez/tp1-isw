@@ -1,9 +1,48 @@
-\subsection{Aclaraciones / Futuras mejoras}
+\subsection{Aclaraciones}
 
-\par Acá la idea sería poner cosas que "supusimos" o tomamos como válidas. Explicar por qué.
-\par También poner cosas que dejamos "duras" y que van a ser futuras mejoras.
-
-
+\subsubsection{Asunciones del dominio}
 \begin{itemize}
-  \item Por ejemplo cuando creas de entrada mas plantas q pozos, te pueden llegar a quedar plantas libres.. Entonces al crear un nuevo pozo, tenes q elegir a que planta lo conectas. Por ahora solo se está eligiendo "la menos usada". Esto en un futuro debería ser una estrategia y que se pueda modificar.
+\item La cantidad de pozos que se ingresa como parámetro nunca supera la cantidad de parcelas en el yacimiento.
+\item Los diferentes criterios (construcción, reinyección, etc) no son contradictorios entre sí.
+
 \end{itemize}
+
+
+
+\subsubsection{Implementación}
+
+\par Para implementar el simulador, tuvimos que tomar muchas decisiones al momento de elegir qué era lo que íbamos a desarrollar y cómo hacerlo. A grandes rasgos, la idea principal fue dejar al usuario elegir qué criterios utilizar (en base a los desarrollados), indicándolos al principio, y que se empiece a ejecutar la simulación; es decir, no existe la posibilidad de cambiar los criterios o agregarle información una vez que empieza. Se ejecuta un un ciclo principal que representa el paso de los días, y en cada día se ejecutan todos los criterios con un orden específico (construcción de pozos, construcción de plantas procesadoras, construcción de tanques de agua, construcción de tanques de gas, extracción y reinyección), sí y solo sí es válido ese día (es decir, si no se verifica la condición del criterio de parada). Cada criterio es el encargado de decidir qué hacer cada día de acuerdo a la estrategia elegida, y una vez que ya no pueda hacer nada, se da por finalizado y se ejecuta el próximo. Al final del día se actualizan los valores de presión y composición de producto en los pozos, los valores de gastos y ganancia, etc. 
+\par Las estrategias que decidimos implementar fueron las siguientes: 
+\begin{itemize}
+  \item \textbf{Parada:} Se decide finalizar la ejecución luego de una cierta cantidad de días que decide el usuario. 
+  \item \textbf{Pozos:} Se determina cuál va a ser la cantidad de pozos a construir y se empiezan a construir apenas se pueda (dependiendo de los rigs disponibles)
+  \item \textbf{Excavadoras:} 
+    \subitem - Se alquilan a demanda de la construcción de pozos, en base a un catálogo inicial 
+    \subitem - Se indica inicialmente cuál es el número máximo de excavadoras que se pueden usar al mismo tiempo
+  \item \textbf{Parcelas:} 
+    \subitem - Se seleccionan las parcelas menos profundas
+    \subitem - Se seleccionan las parecelas con el terreno de menor resistencia
+  \item \textbf{Plantas:}
+    \subitem - Edificación: 
+        \subsubitem - Se empiezan a construir todas las plantas al inicio de la simulación
+        \subsubitem - Se define la cantidad máxima (o ilimitada) de plantas a construir
+    \subitem - Selección: para asignarle una planta a un pozo, se elije la de mayor capacidad        
+  \item \textbf{Tanques:}
+    \subitem - Construcción 
+        \subsubitem - Se construyen a demanda (cada vez que se necesita extraer)
+        \subsubitem - Se construye una cierta cantidad desde el inicio
+    \subitem - Selección: se seleccionan los tanques de mayor capacidad
+  \item \textbf{Extracción y Reinyección:}
+    \subitem - Nunca se reinyecta
+    \subitem - Se reinyecta si es necesario utilizando agua comprada al alcanzar una presión crítica
+\end{itemize}
+
+
+
+
+
+\subsubsection{Futuras mejoras}
+
+La idea de esta sección es dejar en claro que la implementación puede ser ampliamente mejorada con el desarrollo de nuevas estrategias y criterios de manera de que pueda ser más versátil y permita una mayor variedad de posibles simulaciones. Por ejemplo, el hecho de que la asignación de las plantas a los pozos se haga en base a las de mayor capacidad es muy estricto, la idea en un futuro sería que sea el usuario el que defina qué estrategia usar para esta selección.
+
+

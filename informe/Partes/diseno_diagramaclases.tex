@@ -1,251 +1,253 @@
-En el siguiente diagrama se puede ver la relaci\'on entre las clases encargadas de la gesti\'on de las parcelas
 \newpage
-\begin{tikzpicture}
-    \begin{class}{SistemaDeGestionDeParcelas}{8,5}
-        \attribute{initializeComoParteDe: unSimulador}
-        \attribute{parcelas}
-        \attribute{usarComoFuenteDeParcelasA: unYacimiento}
-        \attribute{parcelasEnUso}
-        \attribute{parcelasLibres}
-        \attribute{utilizarParcela: unaParcela}
-        \operation{comoParteDe: unSimulador}
-    \end{class}
-    
-    \begin{class}{EstrategiaDeSeleccionDeParcelas}{10,10}
-        \operation{ejecutarEn: unSimulador}
-    \end{class}
+
+\subsubsection{Gestión de parcelas}
+Para la gestión de parcelas decidimos hacer tres clases que auxilian al sistema de gestión de parcelas. 
+\begin{itemize}
+    \item Estrategia de selección de parcelas: como se comentó anteriormente esta clase se encarga de decidir que parcela va a ser seleccionada.
+    \item Yacimiento: Posee el conocimiento de todo el conocimiento topológico del lugar físico donde se va a realizar la simulación.
+    \item Parcela de yacimiento: Es una parte del yacimiento, en particular sólo puede ser perforada una sola vez. Posee todo el conocimiento geológico de su correspondiente lugar físico.
+\end{itemize}
+En el siguiente diagrama se puede ver la relaci\'on entre las clases encargadas de la gesti\'on de las parcelas:\\
+
+
+\begin{figure}[ht]
+    \begin{tikzpicture}
+        \begin{class}{SistemaDeGestionDeParcelas}{0,-10}
+            \attribute{.initializeComoParteDe: unSimulador}
+            \attribute{.parcelas}
+            \attribute{.usarComoFuenteDeParcelasA: unYacimiento}
+            \attribute{.parcelasEnUso}
+            \attribute{.parcelasLibres}
+            \attribute{.utilizarParcela: unaParcela}
+            \operation{.comoParteDe: unSimulador}
+        \end{class}
         
-    \begin{class}{Yacimiento}{0,15}
-        \operation{deTamanioEnHectareas: unasHectareas volumenDeProducto: unVolumen compuestoPor: unaComposicionPorcentualDeReservorio }
-        \attribute{composicionInicial}
-        \attribute{initializeDeTamanioEnHectareas: unasHectareas volumenDeProducto: unVolumen compuestoPor: unaComposicionPorcentualDeReservorio }
-        \attribute{parcelaLibreDeTipo: unMantoGeologico presionInicial: unCantidadDePresion yDistanciaAlReservorio: unaDistanciaEnMetros}
-        \attribute{parcelasDefinidas}
-        \attribute{volumenDeProductoInicial}
-    \end{class}
+        \begin{class}{EstrategiaDeSeleccionDeParcelas}{7,-9}
+            \implement{SistemaDeGestionDeParcelas}
+            \operation{.ejecutarEn: unSimulador}
+        \end{class}
+            
+        \begin{class}{Yacimiento}{0,0}
+            \operation{.deTamanioEnHectareas: unasHectareas volumenDeProducto: unVolumen compuestoPor: unaComposicionPorcentualDeReservorio }
+            \attribute{.composicionInicial}
+            \attribute{.initializeDeTamanioEnHectareas: unasHectareas volumenDeProducto: unVolumen compuestoPor: unaComposicionPorcentualDeReservorio }
+            \attribute{.parcelaLibreDeTipo: unMantoGeologico presionInicial: unCantidadDePresion yDistanciaAlReservorio: unaDistanciaEnMetros}
+            \attribute{.parcelasDefinidas}
+            \attribute{.volumenDeProductoInicial}
+        \end{class}
+    
+        \begin{class}{ParcelaDeYacimiento}{8,0}
+            \attribute{.distanciaAlReservorio}
+            \attribute{.presionInicial}
+            \attribute{.resistenciaTerreno}
+            \attribute{.yacimiento}
+            \attribute{.printOn: aStream}
+            \attribute{.initializeDeTipo: aMantoGeologico conPresionInicial: unaMedidaDePresion profunidadEnMetros: unaMedidaDeDistancia alReservorioEn: unYacimiento}
+            \operation{.deTipo: unMantoGeologico conPresionInicial: unaMedidaDePresion profunidadEnMetros: unaMedidaDeDistancia alReservorioEn: unYacimiento}
+        \end{class}
+        \unidirectionalAssociation{Yacimiento}{parcelas}{0..*}{ParcelaDeYacimiento}
+        \unidirectionalAssociation{SistemaDeGestionDeParcelas}{yacimiento}{1}{Yacimiento}
+    \end{tikzpicture}
+    \caption{Diagrama de clases que muestra la parte del sistema de gestión de parcelas.}
+    \label{fig:dia_obj_criterios_1}
+\end{figure}
 
-    \begin{class}{ParcelaDeYacimiento}{0,5}
+\newpage
+
+
+\subsubsection{Gestión de excavadoras}
+\par El sistema recibe como configuración un catálogo de excavadoras que se pueden alquilar, junto con su consto por día y cantidad de días de alquiler. Esto fue modelado mediante la clase \textit{ItemDeAlquiler}. Como vemos en la figura \ref{fig:dia_cla_catalogo_1}, el sistema de gestión de excavadoras conoce una lista de items de alquiler. También conoce las excavadoras en uso y las disponibles. De esta manera, todo el que necesite utilizar excavadoras o saber sobre su situación debe consultar al sistema de gestión de excavadoras.
+
+\begin{figure}[ht]
+    \begin{tikzpicture}
+        \begin{class}[text width=6cm]{SistemaDeGestionDeExcavadoras}{0,0}
+            \attribute{.excavadorasDisponibles}
+            \attribute{.indiceAlquilerMinimo}
+            \attribute{.indicePrecio}
+            \attribute{.initializeComoParteDe: unSistemaDeSimulacion }
+            \operation{.comoParteDe: unSistemaDeSimulacion}
+        \end{class}
         
-        \attribute{distanciaAlReservorio}
-        \attribute{presionInicial}
-        \attribute{resistenciaTerreno}
-        \attribute{yacimiento}
-        \attribute{printOn: aStream}
-        \attribute{initializeDeTipo: aMantoGeologico conPresionInicial: unaMedidaDePresion profunidadEnMetros: unaMedidaDeDistancia alReservorioEn: unYacimiento}
-        \operation{deTipo: unMantoGeologico conPresionInicial: unaMedidaDePresion profunidadEnMetros: unaMedidaDeDistancia alReservorioEn: unYacimiento}
-    \end{class}
-    \composition{Yacimiento}{}{}{ParcelaDeYacimiento}
-    \composition{EstrategiaDeSeleccionDeParcelas}{}{}{SistemaDeGestionDeParcelas}
-    \composition{SistemaDeGestionDeParcelas}{}{}{Yacimiento}
-\end{tikzpicture}
-
-
-\newpage
-En el siguiente diagrama exhibimos el diseño que hemos planteado para resolver la gesti\'on de las excavadoras, las cuales van a ser requeridas para realizar los pozos
-\begin{tikzpicture}
-    \begin{class}{SistemaDeGestionDeExcavadoras}{0,10}
-        \attribute{excavadorasDisponibles}
-        \attribute{indiceAlquilerMinimo}
-        \attribute{indicePrecio}
-        \attribute{initializeComoParteDe: unSistemaDeSimulacion }
-        \attribute{registrar: unaExcavadoraRig conUnCostoPorDia: unPrecio porUnMinimoDeDias: unaCantidadDeDias}
-        \operation{comoParteDe: unSistemaDeSimulacion}
-    \end{class}
-    
-    \begin{class}{ExcavadoraRig}{0,1}
-        \attribute{initializePerforandoEnMetrosEnUnDia: unaMedidaEnMetros consumiendoEnLitros: unaMedidaEnLitros}
-        \attribute{printOn: aStream}
-        \attribute{profundidadPorDia}
-    \end{class}
-    
-    \begin{class}{CatalogoDeExcavadorasRig}{10,5}
-        \attribute{conLosRegistrosHacer: aBlockClosure }
-        \attribute{excavadorasDisponibles}
-        \attribute{indiceAlquilerMinimo}
-        \attribute{indicePrecio}
-        \attribute{initialize}
-        \attribute{registrar: unaExcavadoraRig aUnCostoPorDia: unPrecio porUnMinimoDeDias: unaCantidadDeDias}
-    \end{class}
-
-    \composition{ExcavadoraRig}{}{}{CatalogoDeExcavadorasRig}
-    \composition{SistemaDeGestionDeExcavadoras}{excavadorasDisponibles}{}{CatalogoDeExcavadorasRig}
-\end{tikzpicture}
+        \begin{class}[text width=6cm]{ExcavadoraRig}{0,-7}
+            \attribute{.initializePerforandoEnMetrosEnUnDia: unaMedidaEnMetros consumiendoEnLitros: unaMedidaEnLitros}
+            \attribute{.profundidadPorDia}
+        \end{class}
+        
+        
+        \begin{class}{ItemDeAlquiler}{9,-1}
+            \attribute{.costoPorDia}
+            \attribute{.cantidadDeDias}
+            \attribute{.modeloDelItem}
+        \end{class}
+        
+        
+        \unidirectionalAssociation{SistemaDeGestionDeExcavadoras}{catalogo}{0..*}{ItemDeAlquiler}
+        \unidirectionalAssociation{SistemaDeGestionDeExcavadoras}{excavadorasDisponibles}{0..*}{ExcavadoraRig}
+        
+    \end{tikzpicture}
+    \caption{Diagrama de clases que muestra al sistema de gestión de excavadoras y cómo almacena el catálogo junto con las excavadoras disponibles.}
+    \label{fig:dia_cla_catalogo_1}
+\end{figure}
 
 \newpage
-Luego de haber presentado los dos diagramas anteriores ya podemos mostrar como diseñamos la soluci\'on para el problema de la contrucci\'on de los pozos
+
+\subsubsection{Construcción de pozos}
+Para nuestro modelo de la construcción de los pozos las dos secciones anteriores son fundamentales porque el sistema de construcción de pozos necesita conocer el terreno y con qué lo va a perforar. 
+El sistema de construcción de pozos conoce al plan de construcción de pozos (encargado de conocer cuando comienza y cuando termina la construcción) y el criterio de construcción (encargado de indicar cuantos pozos hay que contruir, en qué lugar, con que excavadora y con qué estrategia).
+Luego de haber presentado los dos diagramas anteriores ya podemos mostrar c\'omo diseñamos la soluci\'on para el problema de la contrucci\'on de los pozos\\
 
 \begin{tikzpicture}
-    \begin{class}{SistemaDeConstruccion}{0,0}
-        \operation{comoParteDe: unSimulador}
-        \attribute{actualizarPlanesDePozos}
-        \attribute{comenzarConstruccionDePozoEn: unaParcela usando: unaExcavadora al: unaFecha}
+    \begin{class}{SistemaDeConstruccion}{8,-4}
+        \operation{.comoParteDe: unSimulador}
+        \attribute{.actualizarPlanesDePozos}
+        \attribute{.comenzarConstruccionDePozoEn: unaParcela usando: unaExcavadora al: unaFecha}
     \end{class}
-    \begin{class}{SistemaDeGestionDeParcelas}{0,-10}
-        \attribute{initializeComoParteDe: unSimulador}
-        \attribute{parcelas}
-        \attribute{usarComoFuenteDeParcelasA: unYacimiento}
-        \attribute{parcelasLibres}
-        \attribute{utilizarParcela: unaParcela}
-        \operation{comoParteDe: unSimulador}
+
+    \begin{class}{EstrategiaSeleccionParcelas}{10,0}
+        \operation{.ejecutarEn: unSimulador}
     \end{class}
-    \begin{class}{PlanDeConstruccionDePozo}{-10,0}
-        \attribute{acercaDePozo}
-        \attribute{excavadora}
-        \attribute{fechaDeInicioDeConstruccion}
-        \attribute{fechaFinDeConstruccion}
-        \attribute{pozoDeExtraccion}
-        \attribute{initializePara: unPozoDeExtraccion cavadoCon: unaExcavadora arrancandoEl: unaFecha}
-        \operation{para: unPozoDeExtraccion cavadoCon: unaExcavadora empezandoEl: unaFecha}
+    \begin{class}{EstrategiaSeleccionExcavadoras}{10,-2}
+        \attribute{.ejecutarEn: unSimulador}
     \end{class}
-    \begin{class}{CriterioDeConstruccionPozo}{0,10}
-        \attribute{ejecutarEn: unSimulador}
-        \attribute{initializeConstruir: unaCantidad parcelasObtenidasCon: unaEstrategiaDeSeleccionDeParcelas yExcavadorasCon: unaEstrategiaDeSeleccionDeExcavadoras}
-        \attribute{siFaltanConstruirPozosEn: unSistemaDeConstruccion repetir: unBloqueDeUnArgumento}
-        \attribute{siHayDisponible: unaExcavadora realizar: unBloqueDeUnArgumento}
+    \begin{class}{CriterioDeConstruccionPozo}{0,0}
+        \implement{SistemaDeConstruccion}
+        \attribute{.ejecutarEn: unSimulador}
+        \attribute{.initializeConstruir: unaCantidad parcelasObtenidasCon: unaEstrategiaDeSeleccionDeParcelas yExcavadorasCon: unaEstrategiaDeSeleccionDeExcavadoras}
+        \attribute{.siFaltanConstruirPozosEn: unSistemaDeConstruccion repetir: unBloqueDeUnArgumento}
+        \attribute{.siHayDisponible: unaExcavadora realizar: unBloqueDeUnArgumento}
     \end{class}
-    \begin{class}{EstrategiaSeleccionParcelas}{-10,10}
-        \operation{ejecutarEn: unSimulador}
+    \begin{class}{PlanDeConstruccionDePozo}{3,-8}
+        \attribute{.excavadora}
+        \attribute{.fechaDeInicioDeConstruccion}
+        \attribute{.fechaFinDeConstruccion}
+        \attribute{.pozoDeExtraccion}
+        \operation{.para: unPozoDeExtraccion cavadoCon: unaExcavadora empezandoEl: unaFecha}
     \end{class}
-    \begin{class}{EstrategiaSeleccionExcavadoras}{-10,8}
-        \attribute{ejecutarEn: unSimulador}
-    \end{class}
-    \composition{CriterioDeConstruccionPozo}{}{}{EstrategiaSeleccionParcelas}
-    \composition{CriterioDeConstruccionPozo}{}{}{EstrategiaSeleccionExcavadoras}
-    \composition{SistemaDeConstruccion}{}{}{SistemaDeGestionDeParcelas}
-    \composition{SistemaDeConstruccion}{}{}{PlanDeConstruccionDePozo}
-    \composition{SistemaDeConstruccion}{}{}{CriterioDeConstruccionPozo}
+    \unidirectionalAssociation{CriterioDeConstruccionPozo}{}{}{EstrategiaSeleccionParcelas}
+    \unidirectionalAssociation{CriterioDeConstruccionPozo}{}{}{EstrategiaSeleccionExcavadoras}
+    %\unidirectionalAssociation{SistemaDeConstruccion}{}{}{SistemaDeGestionDeParcelas}
+    \unidirectionalAssociation{SistemaDeConstruccion}{}{0..*}{PlanDeConstruccionDePozo}
 \end{tikzpicture}
 
-Dado que en el enunciado se mencion\'o que hab\'ia m\'as de una manera de seleccionar excavadoras, parcelas o plantas y que esa decisi\'on influ\'ia en el resultado final de la simulaci\'on vimos un intent similar al del patr\'on de diseño Strategy por lo que decidimos usar dicho patr\'on.\\
+
+\subsubsection{Planes de construcción}
+
+\par Como hay varios tipos de planes de construcción decidimos que lo mejor era subclasificar el plan de construcción en cada uno de los planes de construcción de cada caso, de esta manera todos estos objetos son polimórficos.
+
+\begin{tikzpicture}
+    \begin{abstractclass}{PlanDeConstruccion}{5,-9}
+        \attribute{}
+    \end{abstractclass}
+    \begin{class}{PlanDeConstruccionDePozo}{0,-11}
+        \inherit{PlanDeConstruccion}
+        \attribute{.excavadora}
+        \attribute{.fechaDeInicioDeConstruccion}
+        \attribute{.fechaFinDeConstruccion}
+        \attribute{.pozoDeExtraccion}
+        \operation{.para: unPozoDeExtraccion cavadoCon: unaExcavadora empezandoEl: unaFecha}
+    \end{class}
+    \begin{class}{PlanDeConstruccionDePlanta}{1.5,-16}
+        \inherit{PlanDeConstruccion}
+        \attribute{.plantaProcesadora}
+        \attribute{.fechaDeInicioDeConstruccion}
+        \attribute{.fechaFinDeConstruccion}
+        \operation{.para: unaPlanta empezandoEl: unaFecha yFinalizando: otraFecha}
+    \end{class}
+    \begin{class}{PlanDeConstruccionDeTanqueDeAgua}{8.5,-16}
+       \inherit{PlanDeConstruccion}
+        \attribute{.tanqueDeAgua}
+        \attribute{.fechaDeInicioDeConstruccion}
+        \attribute{.fechaFinDeConstruccion}
+        \operation{.para: unTanque empezandoEl: unaFecha yFinalizando: otraFecha}
+    \end{class}
+    \begin{class}{PlanDeConstruccionDeTanqueDeGas}{10,-11}
+       \inherit{PlanDeConstruccion}
+        \attribute{.tanqueDeGas}
+        \attribute{.fechaDeInicioDeConstruccion}
+        \attribute{.fechaFinDeConstruccion}
+        \operation{.para: unTanque empezandoEl: unaFecha yFinalizando: otraFecha}
+    \end{class}
+\end{tikzpicture}
 
 \newpage
-\begin{landscape}
 
-\begin{tikzpicture}
-    \begin{abstractclass}{EstrategiaDeSeleccion}{4,10}
-        \attribute{ejecutarEn: unSimulador}
-    \end{abstractclass}
-    \begin{abstractclass}{EstrategiaSeleccionExcavadoras}{-5,8}
-        \inherit{EstrategiaDeSeleccion}
-        \attribute{ejecutarEn: unSimulador}
-    \end{abstractclass}
-    \begin{class}{EstrategiaAlquilerADemanda}{-5,5}
-        \attribute{ejecutarEn: unSimulador}
-        \inherit{EstrategiaSeleccionExcavadoras}
-    \end{class}
-    \begin{abstractclass}{EstrategiaSeleccionParcelas}{1,8}
-        \inherit{EstrategiaDeSeleccion}
-        \attribute{ejecutarEn: unSimulador}
-    \end{abstractclass}
-    \begin{class}{EstrategiaParcelasMenorResist}{1,5}
-        \inherit{EstrategiaSeleccionParcelas}
-        \attribute{ejecutarEn: unSimulador}
-    \end{class}
-    \begin{abstractclass}{EstrategiaSeleccionPlantas}{6,3}
-        \inherit{EstrategiaDeSeleccion}
-        \attribute{ejecutarEn: unSimulador}
-    \end{abstractclass}
-    \begin{class}{EstrategiaPlantaMasCapacidad}{6,1}
-        \inherit{EstrategiaSeleccionPlantas}
-        \attribute{ejecutarEn: unSimulador}
-    \end{class}
-    \begin{abstractclass}{EstrategiaSeleccionTanques}{12,8}
-        \inherit{EstrategiaDeSeleccion}
-        \attribute{ejecutarEn: unSimulador}
-    \end{abstractclass}
-    \begin{class}{EstrategiaTanqueMasCapacidad}{12,5}
-        \inherit{EstrategiaSeleccionTanques}
-        \attribute{ejecutarEn: unSimulador}
-    \end{class}
-\end{tikzpicture}
-\end{landscape}
+\subsubsection{Otras decisiones de diseño}
+
+\par Dado que en el enunciado se mencion\'o que hab\'ia m\'as de una manera de seleccionar excavadoras, parcelas o plantas y que esa decisi\'on influ\'ia en el resultado final de la simulaci\'on vimos un intent similar al del patr\'on de diseño Strategy por lo que decidimos usar dicho patr\'on.\\
+
 
 Tambi\'en ocurre algo similar con la condici\'ion de corte y la construcci\'on de las distintas edificaciones, por lo que tambi\'en usamos Strategy. \\
+\vspace{1cm}
+
 \begin{tikzpicture}
-    \begin{abstractclass}{EstrategiaDeParada}{0,10}
-        \attribute{ejecutarEn: unSimulador}
+    \begin{abstractclass}{EstrategiaDeParada}{0,0}
+        \attribute{.ejecutarEn: unSimulador}
     \end{abstractclass}
-    \begin{class}{EstrategiaDeParadaCantDias}{0,8}
+    \begin{class}{EstrategiaDeParadaCantDias}{0,-2}
         \inherit{EstrategiaDeParada}
-        \operation{ejecutarEn: unSimulador}
-        \operation{initializeMaxCantDiasSimulacion: unaCantidadDeDias}
+        \operation{.ejecutarEn: unSimulador}
+        \operation{.initializeMaxCantDiasSimulacion: unaCantidadDeDias}
     \end{class}
 \end{tikzpicture}
 
-En el enunciado se comenta que no se puede extraer de los pozos que est\'an en construcci\'on ni cuando la v\'alvula est\'a cerrada. Adem\'as s\'olo se puede abrir la v\'alvula de un pozo ya construido. Dada esta situaci\'on en la que hay varios estados, optamos por modelar el comportamiento de un pozo utilizando el patr\'on State.\\
+\vspace{1cm}
+En el enunciado se comenta que no se puede extraer de los pozos que est\'an en construcci\'on ni cuando la v\'alvula est\'a cerrada. Adem\'as s\'olo se puede abrir la v\'alvula de un pozo ya construido. Dada esta situaci\'on en la que hay varios estados, optamos por modelar el comportamiento de un pozo utilizando el patr\'on State.
+
+\vspace{0.5cm}
+
 \begin{tikzpicture}
-    \begin{abstractclass}{EstadoPozoDeExtraccion}{0,10}
+    \begin{abstractclass}{EstadoPozoDeExtraccion}{0,5}
         \attribute{habilitado}
     \end{abstractclass}
-    \begin{class}{PozoDeshabilitado}{-5,5}
+    \begin{class}{PozoDeshabilitado}{-5,2}
         \inherit{EstadoPozoDeExtraccion}
-        \attribute{habilitado}
+        \attribute{.habilitado}
     \end{class}
-    \begin{class}{PozoEnConstruccion}{0,5}
+    \begin{class}{PozoEnConstruccion}{0,2}
         \inherit{EstadoPozoDeExtraccion}
-        \attribute{habilitado}
+        \attribute{.habilitado}
     \end{class}
-    \begin{class}{PozoHabilitado}{5,5}
+    \begin{class}{PozoHabilitado}{5,2}
         \inherit{EstadoPozoDeExtraccion}
-        \attribute{habilitado}
+        \attribute{.habilitado}
     \end{class}
 \end{tikzpicture}
 
-De manera similar se modelaron las plantas procesadoras y los tanques de agua y gas pero sus estados son \"en construcci\'on\" y \"terminado\".\\
+\vspace{1cm}
 
+De manera similar se modelaron las plantas procesadoras y los tanques de agua y gas pero sus estados son \textit{en construcci\'on} y \textit{terminado}.\\
 
-La parte fundamental del input del simulador son los criterios, porque de esta manera el usuario va a poder ver el comportamiento que espera en cada caso para cada una de las acciones (construir un pozo, reinyectar, etc). El intent es similar al del patr\'on Behavior por lo que decidimos usarlo en nuestro modelo. \\
-\begin{tikzpicture}
-    \begin{abstractclass}{ComportamientoDeCriterio}{0,10}
-        \operation{ejecutarEn: unSimulador}
-    \end{abstractclass}
-    
-    \begin{class}{CriterioDeConstruccionDeEdificio}{-5,8}
-        \inherit{ComportamientoDeCriterio}
-        \operation{ejecutarEn: unSimulador}
-        \operation{initializeAcordeA: unaEstrategiaDeConstruccionDePlantas}
-    \end{class}
-    \begin{class}{CriterioDeConstruccionDePozo}{-2,5}
-        \inherit{ComportamientoDeCriterio}
-        \operation{ejecutarEn: unSimulador}
-        \operation{initializeConstruir: unaCantidad parcelasObtenidasCon: unaEstrategiaDeSeleccionDeParcelas yExcavadorasCon: unaEstrategiaDeSeleccionDeExcavadoras}
-    \end{class}
-    \begin{class}{CriterioDeExtraccionYReinyeccion}{4,4}
-        \inherit{ComportamientoDeCriterio}
-        \operation{ejecutarEn: unSimulador}
-    \end{class}
-    \begin{class}{CriterioDeParada}{5,8}
-        \inherit{ComportamientoDeCriterio}
-        \operation{ejecutarEn: unSimulador}
-    \end{class}
-\end{tikzpicture}
+\vspace{1cm}
 
-Otra caracter\'istica del problema que consideramos muy importante fue que se deb\'ia realizar un log con todas las acciones realizadas. Para esto diseñamos un objeto que revisara todos los eventos sucedidos en cada pozo, lo cual es muy similar al intent del patr\'on Observer por ende decidimos utilizarlo.
+Otra caracter\'istica del problema que consideramos muy importante fue que se deb\'ia realizar un log con todas las acciones realizadas. Para esto diseñamos un objeto que revisara todos los eventos sucedidos en cada pozo, lo cual es muy similar al intent del patr\'on Observer por ende decidimos utilizarlo.\\
 
 \begin{tikzpicture}
     \begin{abstractclass}{EventoSobrePozo}{0,10}
-        \attribute{esExtraccion}
-        \attribute{esReinyeccion}
-        \attribute{fechaDeEvento}
-        \attribute{pozo}
-        \attribute{siEsExtraccion: unBloqueParaExtraccion siEsReinyeccion: unBloqueParaReinyeccion enOtroCaso: unBloqueDefault}
+        \attribute{.esExtraccion}
+        \attribute{.esReinyeccion}
+        \attribute{.fechaDeEvento}
+        \attribute{.pozo}
+        \attribute{.siEsExtraccion: unBloqueParaExtraccion siEsReinyeccion: unBloqueParaReinyeccion enOtroCaso: unBloqueDefault}
     \end{abstractclass}
     
-    \begin{class}{EventoDeExtraccion}{5,0}
-        \operation{initializeEn: unPozoDeExtraccion al: unFecha}
-        \attribute{fechaDeEvento}
-        \attribute{fechaDeExtraccion}
-        \attribute{pozo}
-        \attribute{printOn: aStream}
+    \begin{class}{EventoDeExtraccion}{5,5}
+        \operation{.initializeEn: unPozoDeExtraccion al: unFecha}
+        \attribute{.fechaDeEvento}
+        \attribute{.fechaDeExtraccion}
+        \attribute{.pozo}
+        \attribute{.printOn: aStream}
         \inherit{EventoSobrePozo}
     \end{class}
     
-    \begin{class}{EventoDeReinyeccion}{-5,0}
+    \begin{class}{EventoDeReinyeccion}{-5,5}
         \inherit{EventoSobrePozo}
-        \attribute{fechaDeEvento}
-        \attribute{fechaDeReinyeccion}
-        \attribute{pozo}
-        \attribute{volumenReinyectado}
-        \attribute{initializeDe: unVolumen en: unPozoDeExtraccion el: unaFecha}
+        \attribute{.fechaDeEvento}
+        \attribute{.fechaDeReinyeccion}
+        \attribute{.pozo}
+        \attribute{.volumenReinyectado}
+        \attribute{.initializeDe: unVolumen en: unPozoDeExtraccion el: unaFecha}
     \end{class}
 \end{tikzpicture}
+
+
+\newpage

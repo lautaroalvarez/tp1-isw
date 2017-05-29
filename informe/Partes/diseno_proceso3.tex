@@ -1,19 +1,18 @@
-\subsection{Ejecución de un criterio de parada}
+\subsection{EjecuciÃ³n de un criterio de parada}
 
-\par A continuación vamos a mostrar el diagrama de secuencias de la ejecución del criterio de parada que es el que determina la finalización de la simulación. Va a estar compuesto por una estrategia de parada y un parámetro representativo de la estrategia (por ejemplo, una estrategia de parada podría ser "hasta que el yacimiento tenga cierto nivel de presión de los pozos" y el parámetro representativo sería ese valor de presión). Este criterio se ejecutará cada día (luego de haber ejecutado los criterios de construcción, de extracción, etc) de manera de indicarle al sistema de ejecución de criterios si debe finalizar o no la simulación (devuelve true en dicho caso). A continuación describiremos el diagrama de secuencia correspondiente a este criterio.
+\par A continuaciÃ³n vamos a mostrar el diagrama de secuencias de la ejecuciÃ³n del criterio de parada que es el que determina la finalizaciÃ³n de la simulaciÃ³n. Va a estar compuesto por una estrategia de parada y un parÃ¡metro representativo de la estrategia (por ejemplo, una estrategia de parada podrÃ­a ser "hasta que el yacimiento tenga cierto nivel de presiÃ³n de los pozos" y el parÃ¡metro representativo serÃ­a ese valor de presiÃ³n). Este criterio se ejecutarÃ¡ cada dÃ­a (luego de haber ejecutado los criterios de construcciÃ³n, de extracciÃ³n, etc) de manera de indicarle al sistema de ejecuciÃ³n de criterios si debe finalizar o no la simulaciÃ³n (devuelve true en dicho caso). A continuaciÃ³n describiremos el diagrama de secuencia correspondiente a este criterio.
 
 
 \subsubsection{Escenario}
-\par En este caso nos enfocaremos en un criterio que determina la finalización de la simulación un vez que hayan pasado 150 días. El sistema se encuentra simulando el día 10/12/2017 y la fecha de inicio fue el 01/09/2017.
+\par En este caso nos enfocaremos en un criterio que determina la finalizaciï¿½n de la simulaciÃ³n un vez que hayan pasado 150 dÃ­as. El sistema se encuentra simulando el dÃ­a 10/12/2017 y la fecha de inicio fue el 01/09/2017.
 
 \subsubsection{Funcionamiento General}
-\par Como vemos en el diagrama de secuencias de la figura \ref{fig:dia_sec_parada_1_1}, el sistema de ejecución de criterios le envía un mensaje al criterio para que se ejecute pasándole una referencia al sistema de simulación, ya que es él quien conoce los objetos fechaDeSimulación y fechaDeInicio. Este criterio le envía el mensaje ejecutar a la estrategia elegida por el usuario, que en este caso es de tipo EstrategiaDeParadaPorCantidadDeDias. Luego, la estrategia le consulta al Simulador qué fecha está simulando y cuál es la fecha de inicio. Internamente hace la resta entre las dos fechas, y le responde false a elCriterioDeParada una vez que el resultado fue menor a 150 días.
+\par Como vemos en el diagrama de secuencias de la figura \ref{fig:dia_sec_parada_1_1}, el sistema de ejecuciÃ³n de criterios le envÃ­a un mensaje al criterio para que se ejecute pasÃ¡ndole una referencia al sistema de simulaciÃ³n, ya que es Ã©l quien conoce los objetos fechaDeSimulaciÃ³n y fechaDeInicio. Este criterio le envÃ­a el mensaje ejecutar a la estrategia elegida por el usuario, que en este caso es de tipo EstrategiaDeParadaPorCantidadDeDias. Luego, la estrategia le consulta al Simulador quÃ© fecha estÃ¡ simulando y cuÃ¡l es la fecha de inicio. Internamente hace la resta entre las dos fechas, y le responde false a elCriterioDeParada una vez que el resultado fue menor a 150 dÃ­as.
 
 \begin{landscape}
   \begin{figure}[ht]
   \centering
     \begin{sequencediagram}
-      \newthread{entorno}{\shortstack{Entorno}}
       \newinst{e1}{\shortstack{elSistema\\DeEjecucion\\DeCriterios :\\SistemaDeEjecucion\\DeCriterios}}
       \newinst{e2}{\shortstack{elCriterio\\DeParada :\\CriterioDe\\Parada}}
       \newinst{e3}{\shortstack{laEstrategia\\DeParada :\\Estrategia\\DeParada\\PorCantidad\\DeDias}}
@@ -22,7 +21,7 @@
       \postlevel
       \postlevel
       \postlevel
-      \begin{call}{entorno}{\shortstack{\textbf{ejecutar:}\\elCriterioDe\\Parada}}{e1}{}
+      \begin{call}{}{\shortstack{\textbf{ejecutar:}\\elCriterioDe\\Parada}}{e1}{true}
         \begin{call}{e1}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e2}{true}
           \begin{call}{e2}{\shortstack{\textbf{ejecutarEn:}\\elSimulador}}{e3}{true}
             \begin{call}{e3}{\shortstack{\texbf{fechaDe\\Simulacion}}}{e4}{10/12/2017}
@@ -37,7 +36,7 @@
         \end{call}
       \end{call}
     \end{sequencediagram}
-    \caption{Diagrama de secuencias de la ejecución de un criterio de parada.}
+    \caption{Diagrama de secuencias de la ejecuciï¿½n de un criterio de parada.}
     \label{fig:dia_sec_parada_1_1}
   \end{figure}
 \end{landscape}
