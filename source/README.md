@@ -1,12 +1,15 @@
-# Pasos para cargar los packages en Pharo
+# Cargar el desarrollo en una imagen de Pharo
+
+Arrastrar cada .mcz en la imagen abierta y poner "Load version", en el orden especificado:
 
 ## Modelo y Tests
 
-Arrastrar sobre la imagen de Pharo abierta primero `Tp1-Ing1-Modelo-*.mcz` y luego `Tp1-Ing1-Tests-*.mcz`, y poner "Load version". Eso debería importarlos de una.
+1) Cargar `Tp1-Ing1-Modelo-*.mcz` 
+2) Cargar `Tp1-Ing1-Tests-*.mcz`.
 
 ## Vista
 
-1) Ejecutar LoadThirdPartiesPackages.st para cargar Seaside
-2) Cargar el package `Tp1-Ing1-Vista-*.mcz` haciendo lo mismo que para el modelo y tests.
-3) Ejecutar StartWebServer.st para levantar el servidor
-4) Acceder desde un browser a http://localhost:8080/tp1
+1) Cargar `Tp1-Ing1-PackagesLoader-*.mcz`.
+2) Cargar `Tp1-Ing1-Vista-*.mcz`.
+
+Luego de cargados los paquetes de la vista se va a poder acceder desde un browser a http://localhost:8080/tp1
